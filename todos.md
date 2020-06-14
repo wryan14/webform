@@ -7,3 +7,4 @@ A list of high-level Todos for the first version of this project.
 - [ ] Improve styling and content of page
 - [ ] Connect form fields to APIs for ease of use
 - [ ] Review usability and provide robust error-messages and guidance
+- [ ] Create Sphinx documentation of project
