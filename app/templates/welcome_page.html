@@ -3,16 +3,18 @@
 {% block content %}
 
 <!--temporary dropdown button; will improve later -->
-
-<div class="dropdown">
-	<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		Dropdown button
-        </button>
-	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-	<a class="dropdown-item" href="#">Add publication</a>
-	<a class="dropdown-item" href="#">Edit publication</a>
-	<a class="dropdown-item" href="#">Forthcoming to published</a>
+<h1>WebForm Landing Page!</h1>
+<div class="jumbotron">
+<div class="dropdown show">
+	<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	  Dropdown link
+	</a>
+	<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+	  <a class="dropdown-item" href="#">Add publication</a>
+	  <a class="dropdown-item" href="#">Edit publication</a>
+	  <a class="dropdown-item" href="#">Update forthcoming paper</a>
 	</div>
+  </div>
 </div>
 
 {% endblock %}
