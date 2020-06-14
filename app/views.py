@@ -1,6 +1,6 @@
 from app import app
-from flask import render_template
-from forms import *
+from flask import render_template, redirect, url_for
+from .forms import *
 
 @app.route('/')
 def home():
@@ -18,6 +18,12 @@ def newpub():
 
         name = form.name.data  
         form.name.data = ''
+        return redirect(url_for('success'))
     
     return render_template('newpub.html', form=form, name=name)  
-    
+
+
+@app.route('/success')
+def success():
+    '''Confirmation page after form submission'''
+    return render_template('success.html')
