@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form method="POST">
+	<!-- add hidden_tag for CRSF security -->
+	{{ form.hidden_tag() }}
+	{{ form.name.label }} {{ form.name() }}
+	{{ form.submit() }}
+</form>
+
+{% endblock %}

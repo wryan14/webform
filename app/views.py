@@ -22,6 +22,36 @@ def newpub():
     
     return render_template('newpub.html', form=form, name=name)  
 
+@app.route('/edit', methods=['GET', 'POST'])
+def editpub():
+    '''Renders new publication web-form'''
+
+    name = False
+    form = NewPublication()
+
+    if form.validate_on_submit():
+
+        name = form.name.data  
+        form.name.data = ''
+        return redirect(url_for('success'))
+    
+    return render_template('editpub.html', form=form, name=name)  
+
+@app.route('/update', methods=['GET', 'POST'])
+def updatepub():
+    '''Renders new publication web-form'''
+
+    name = False
+    form = NewPublication()
+
+    if form.validate_on_submit():
+
+        name = form.name.data  
+        form.name.data = ''
+        return redirect(url_for('success'))
+    
+    return render_template('updatepub.html', form=form, name=name)  
+
 
 @app.route('/success')
 def success():
