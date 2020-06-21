@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
 '''
 These fields are dummy fields, and will be used as placeholders until I gather more information
 on which fields are needed.  Flask forms allows for more complicated data structures and validation,
@@ -10,7 +11,8 @@ class NewPublication(FlaskForm):
     '''Creates form field for new publication'''
 
     # adding small set of dummy data for setup purposes
-    name = StringField("Name: ")
+    doi = StringField('DOI: ')
+    name = StringField("Name: ", validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 

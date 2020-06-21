@@ -2,11 +2,18 @@
 
 {% block content %}
 <h1>New publication</h1>
+
+<form action="" method="POST">
+	CrossRef Lookup <input type="text" name="doifind">
+	<input type="submit" value="Lookup">
+</form>
+
 <p>Use the following form to add a new publication</p>
 <form method="POST">
 	<!-- add hidden_tag for CRSF security -->
 	{{ form.hidden_tag() }}
 	{{ form.name.label }} {{ form.name() }}
+	{{form.doi.label}}{{form.doi()}}
 	{{ form.submit() }}
 </form>
 
