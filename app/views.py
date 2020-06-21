@@ -37,7 +37,7 @@ def newpub():
             session['doi'] = form.doi.data
             session['name'] = form.name.data
 
-            return redirect(url_for('success'))
+            return redirect(url_for('success_new'))
 
     return render_template('newpub.html', form=form)
 
@@ -53,7 +53,7 @@ def editpub():
 
         name = form.name.data
         form.name.data = ''
-        return redirect(url_for('success'))
+        return redirect(url_for('success_edit'))
 
     return render_template('editpub.html', form=form, name=name)
 
@@ -69,12 +69,24 @@ def updatepub():
 
         name = form.name.data
         form.name.data = ''
-        return redirect(url_for('success'))
+        return redirect(url_for('success_update'))
 
     return render_template('updatepub.html', form=form, name=name)
 
 
-@app.route('/success')
-def success():
-    '''Confirmation page after form submission'''
-    return render_template('success.html')
+@app.route('/success_new')
+def success_new():
+    '''Confirmation page after form submission for new items'''
+    return render_template('success_new.html')
+
+@app.route('/success_edit')
+def success_edit():
+    '''Confirmation page after form submission for edit items'''
+    return render_template('success_edit.html')
+
+@app.route('/success_update')
+def success_update():
+    '''Confirmation page after form submission for update item'''
+    return render_template('success_update.html')
+
+
