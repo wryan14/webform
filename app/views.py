@@ -45,7 +45,7 @@ def editpub():
     '''Renders new publication web-form'''
 
     name = False
-    form = NewPublication()
+    form = UpdatePublication()
 
     if form.validate_on_submit():
 
@@ -60,7 +60,7 @@ def updatepub():
     '''Renders new publication web-form'''
 
     name = False
-    form = NewPublication()
+    form = UpdatePublicationStatus()
 
     if form.validate_on_submit():
 
