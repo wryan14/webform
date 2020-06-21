@@ -3,6 +3,7 @@
 A list of high-level Todos for the first version of this project.
 
 - [ ] Expand form fields for new, edit, and update publication forms to cover all required metadta
+  - [ ] Identify required and non-required field and add validators
 - [ ] Connect form field output to a database
 - [ ] Improve styling and content of page
 - [ ] Connect form fields to APIs for ease of use
