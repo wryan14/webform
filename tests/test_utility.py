@@ -42,7 +42,7 @@ class UtilityTest(unittest.TestCase):
 
         self.assertTrue(df['Creator'].tolist()[0]=='Smith, Joe P.; Louis, Sandra K.')
         self.assertTrue(df['Title'].tolist()[0]=='Tests with Local Projections')
-        self.assertTrue(df.shape[0]==1)
+        self.assertTrue(df.shape[0]==2)
 
 
 

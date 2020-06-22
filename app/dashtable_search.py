@@ -6,7 +6,7 @@ import datetime
 
 import pandas as pd
 
-from app.utility import cdm_pull
+from utility import cdm_pull
 
 #df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
 #df = df[['continent', 'country', 'pop', 'lifeExp']]  # prune columns for example

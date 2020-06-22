@@ -27,4 +27,32 @@
   <doi><![CDATA[10.17016/FEDS.2020.01]]></doi>
   <find><![CDATA[8834.url]]></find>
 </record>
+<record>
+  <collection><![CDATA[/p16798coll7]]></collection>
+  <pointer><![CDATA[8832]]></pointer>
+  <filetype><![CDATA[url]]></filetype>
+  <parentobject><![CDATA[-1]]></parentobject>
+  <creata><![CDATA[Wolfslayer, Ryan]]></creata>
+  <title><![CDATA[Fake Article on Libraries and Economics]]></title>
+  <date><![CDATA[2017]]></date>
+  <dmcreated><![CDATA[2017-01-01]]></dmcreated>
+  <jel><![CDATA[E00 (General) <br>C20 (Single Equation Models &#124; Single Variables - General)]]></jel>
+  <subjec><![CDATA[Econometric modeling]]></subjec>
+  <publis><![CDATA[U.S. Government Agency]]></publis>
+  <relatig><![CDATA[Example Economics Series]]></relatig>
+  <identia><![CDATA[Wolfslayer, Ryan (2017). "Fake Article on Libraries and Economics&#44;" Example Economics Series 2020-010. Washington: Government Agency. https://doi.org/10.17016/Fake11]]></identia>
+  <citata><![CDATA[Wolfslayer, RYan (2017). "Fake Article on Libraries and Economics," Example Economics Series 2020-010. U.S. Government Agency.]]></citata>
+  <realtia><![CDATA[]]></realtia>
+  <relatib><![CDATA[]]></relatib>
+  <volume><![CDATA[2020-011]]></volume>
+  <issue><![CDATA[]]></issue>
+  <identi><![CDATA[]]></identi>
+  <m1><![CDATA[m1a1; m1a2]]></m1>
+  <board><![CDATA[Agency Division Name]]></board>
+  <quarte><![CDATA[2017Q1]]></quarte>
+  <public><![CDATA[https://example.com/path/to/fakepdf.pdf]]></public>
+  <link><![CDATA[http://example.com/path/to/metadata/fakemetadata]]></link>
+  <doi><![CDATA[10.17016/fake11]]></doi>
+  <find><![CDATA[8835.url]]></find>
+</record>
 </records>
