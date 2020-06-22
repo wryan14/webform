@@ -17,7 +17,7 @@ from app.utility import cdm_pull
 
 # create dash application for editting table
 df = cdm_pull('not_needed_right_now')
-
+# dapp = dash application (i.e. table lookup)
 dapp = dash.Dash(__name__, server=app, url_base_pathname="/edit_table/")
 dapp.title = "Edit webform"
 
