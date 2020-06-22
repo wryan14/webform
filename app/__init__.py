@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, url_for
+import flask
 from config import Config
 import dash
 from dash.dependencies import Input, Output
@@ -8,18 +9,22 @@ import dash_core_components as dcc
 import datetime
 
 import pandas as pd
+import uuid
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
-from app import views
 from app.utility import cdm_pull
+
+local_url = "http://localhost:5000"
 
 # create dash application for editting table
 df = cdm_pull('not_needed_right_now')
 # dapp = dash application (i.e. table lookup)
 dapp = dash.Dash(__name__, server=app, url_base_pathname="/edit_table/")
 dapp.title = "Edit webform"
+
+dapp.server.secret_key = str(uuid.uuid4())
 
 dapp.layout = html.Div([
     dash_table.DataTable(
@@ -46,9 +51,7 @@ dapp.layout = html.Div([
         },
     ),
     html.Div(id='datatable-interactivity-container'),
-    html.Form([
-        html.Button('Edit', type='submit')
-    ], action="", method="POST")
+    html.A(html.Button('Edit records'), href='{}/edit'.format(local_url))
 ])
 
 
@@ -68,4 +71,9 @@ def update_display(rows, derived_virtual_selected_rows):
     except IndexError:
         data = html.H1('Selected Data...')
 
+    flask.session['data'] = pd.DataFrame(selected_rows).to_json()
+
     return data
+
+
+from app import views

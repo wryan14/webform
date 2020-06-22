@@ -1,8 +1,9 @@
-from app import app
+from app import app, dapp
 from flask import render_template, redirect, url_for, session, request
 from .forms import NewPublication, UpdatePublication, UpdatePublicationStatus
 from .utility import crossref_lookup, cdm_pull
-
+import flask
+import json
 
 @app.route('/')
 def home():
@@ -45,16 +46,23 @@ def newpub():
 @app.route('/edit', methods=['GET', 'POST'])
 def editpub():
     '''Renders new publication web-form'''
-
     # load data using cdm_pull and search existing data
     if 'cdmlookup' in request.form: # cdmlookup is the lookup form on editpub.html
         query = request.form['cdmlookup']
         df = cdm_pull('argument not yet needed')
         filtered = df[df.apply(lambda row: row.astype(str).str.contains(query).any(), axis=1)]
-        print(filtered)
         
-    name = False
+        
+    try:
+        name=json.loads(flask.session['data'])
+        name = name['Title']['0']
+        print(name)
+    except KeyError:
+        name = None
+    
+
     form = UpdatePublication()
+    form.name.data = name
 
     if form.validate_on_submit():
 
@@ -97,3 +105,10 @@ def success_update():
     return render_template('success_update.html')
 
 
+@app.route("/edit_table", methods=['GET', 'POST'])
+def dash_app():
+
+    if 'edittable' in request.form:
+        return render_template('editpub')
+
+    return dapp.index()
