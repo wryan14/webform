@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, redirect, url_for, session, request
-from .forms import *
+from .forms import NewPublication, UpdatePublication, UpdatePublicationStatus
 from .utility import crossref_lookup
 
 

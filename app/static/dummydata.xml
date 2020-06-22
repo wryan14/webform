@@ -1,0 +1,30 @@
+<records>
+<record>
+  <collection><![CDATA[/p16798coll7]]></collection>
+  <pointer><![CDATA[8832]]></pointer>
+  <filetype><![CDATA[url]]></filetype>
+  <parentobject><![CDATA[-1]]></parentobject>
+  <creata><![CDATA[Smith, Joe P.; Louis, Sandra K.]]></creata>
+  <title><![CDATA[Tests with Local Projections]]></title>
+  <date><![CDATA[2020]]></date>
+  <dmcreated><![CDATA[2020-02-12]]></dmcreated>
+  <jel><![CDATA[E00 (General) <br>C20 (Single Equation Models &#124; Single Variables - General)]]></jel>
+  <subjec><![CDATA[Econometric modeling]]></subjec>
+  <publis><![CDATA[U.S. Government Agency]]></publis>
+  <relatig><![CDATA[Example Economics Series]]></relatig>
+  <identia><![CDATA[Smith, Joe P., and Sandra K. Louis (2020). "Tests with Local Projections&#44;" Example Economics Series 2020-010. Washington: Government Agency. https://doi.org/10.17016/FEDS.2020.010]]></identia>
+  <citata><![CDATA[Smith, Joe P., and Sandra K. Louis (2020). "Tests with Local Projections," Example Economics Series 2020-010. U.S. Government Agency.]]></citata>
+  <realtia><![CDATA[]]></realtia>
+  <relatib><![CDATA[]]></relatib>
+  <volume><![CDATA[2020-010]]></volume>
+  <issue><![CDATA[]]></issue>
+  <identi><![CDATA[]]></identi>
+  <m1><![CDATA[m1a1; m1a2]]></m1>
+  <board><![CDATA[Agency Division Name]]></board>
+  <quarte><![CDATA[2020Q1]]></quarte>
+  <public><![CDATA[https://example.com/path/to/pdf.pdf]]></public>
+  <link><![CDATA[http://example.com/path/to/metadata/metadata]]></link>
+  <doi><![CDATA[10.17016/FEDS.2020.01]]></doi>
+  <find><![CDATA[8834.url]]></find>
+</record>
+</records>
