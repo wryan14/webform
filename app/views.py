@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, redirect, url_for, session, request
 from .forms import NewPublication, UpdatePublication, UpdatePublicationStatus
-from .utility import crossref_lookup
+from .utility import crossref_lookup, cdm_pull
 
 
 @app.route('/')
@@ -46,6 +46,13 @@ def newpub():
 def editpub():
     '''Renders new publication web-form'''
 
+    # load data using cdm_pull and search existing data
+    if 'cdmlookup' in request.form: # cdmlookup is the lookup form on editpub.html
+        query = request.form['cdmlookup']
+        df = cdm_pull('argument not yet needed')
+        filtered = df[df.apply(lambda row: row.astype(str).str.contains(query).any(), axis=1)]
+        print(filtered)
+        
     name = False
     form = UpdatePublication()
 

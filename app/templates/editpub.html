@@ -2,6 +2,10 @@
 
 {% block content %}
 <h1>Edit Publication</h1>
+<form action="" method="POST">
+	Find CDM record <input type="text" name="cdmlookup">
+	<input type="submit" value="Lookup">
+</form>
 <p>Use the following form to edit publications</p>
 <form method="POST">
 	<!-- add hidden_tag for CRSF security -->
