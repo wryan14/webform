@@ -1,4 +1,4 @@
-import dash
+'''import dash
 import flask
 from dash.dependencies import Input, Output
 import dash_table
@@ -7,8 +7,15 @@ import dash_core_components as dcc
 import datetime
 
 import pandas as pd
+import sys  
+import os  
 
-from utility import cdm_pull
+appdir = os.path.dirname(__file__)
+srcdir = '..'
+sys.path.insert(0, os.path.join(appdir, srcdir))
+from app.utility import cdm_pull
+from app import app as server 
+
 
 #df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
 # df = df[['continent', 'country', 'pop', 'lifeExp']]  # prune columns for example
@@ -19,7 +26,8 @@ from utility import cdm_pull
 
 df = cdm_pull('asdlfkj')
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, meta_tags=[{"name":"viewport", "content":"width=device-width, initial-scale=1"}],
+server=server, url_base_pathname="/edittable")
 
 app.layout = html.Div([
     dash_table.DataTable(
@@ -57,7 +65,7 @@ app.layout = html.Div([
     [Input('datatable-interactivity', "derived_virtual_data"),
      Input('datatable-interactivity', "derived_virtual_selected_rows")]
 )
-def update_graphs(rows, derived_virtual_selected_rows):
+def update_display(rows, derived_virtual_selected_rows):
     if derived_virtual_selected_rows is None:
         derived_virtual_selected_rows = []
     
@@ -69,7 +77,8 @@ def update_graphs(rows, derived_virtual_selected_rows):
         data = html.H1('Selected Data...')
 
     return data
-    
+
+
 
 
 # app.layout = html.Form([
@@ -86,3 +95,4 @@ def update_graphs(rows, derived_virtual_selected_rows):
 
 if __name__ == '__main__':
     app.run_server(debug=True)
+'''
