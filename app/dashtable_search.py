@@ -45,12 +45,15 @@ app.layout = html.Div([
             'textOverflow': 'ellipsis',
         },
     ),
-    html.Div(id='datatable-interactivity-container')
+    html.Div(id='datatable-interactivity-container'),
+    html.Form([
+        html.Button('Edit', type='submit')
+    ], action="", method="POST")
 ])
 
 
 @app.callback(
-    Output('datatable-interactivity-container', "children"),
+    Output('datatable-interactivity-container', 'children'),
     [Input('datatable-interactivity', "derived_virtual_data"),
      Input('datatable-interactivity', "derived_virtual_selected_rows")]
 )
@@ -60,9 +63,13 @@ def update_graphs(rows, derived_virtual_selected_rows):
     
     selected_rows=[rows[i] for i in derived_virtual_selected_rows]
 
-    print(selected_rows)
+    try:
+        data = html.H1(selected_rows[0]['Title'])
+    except IndexError:
+        data = html.H1('Selected Data...')
+
+    return data
     
-  
 
 
 # app.layout = html.Form([
