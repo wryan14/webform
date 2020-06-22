@@ -24,6 +24,28 @@ class UtilityTest(unittest.TestCase):
         name = crossref_lookup('10.17016/FEDS.2020.013', 'title')[0]
         self.assertTrue(name=='Inflation at Risk')
 
+    def test_cdm_pull_columns(self):
+        '''Test to make sure columns correctly translate'''
+        
+        expected_columns = ['Creator', 'Title', 'Date', 'Date-Created', 'JEL Codes', 'Subject',
+                            'Publisher', 'Published in', 'Cite as', 'Citation markup',
+                            'Earlier versions', 'Later versions', 'Volume', 'Issue', 'Identifier',
+                            'm1', 'Division affiliation', 'Quarter', 'Public address',
+                            'Link to article', 'DOI_Number']
+
+        df = cdm_pull('argument not needed in test environment')
+        self.assertTrue(df.columns.tolist()==expected_columns)
+
+    def test_cdm_pull_data(self):
+        '''Check to make sure the correctly carries over form XML to dataframe'''
+        df = cdm_pull('argument not needed in test environment')
+
+        self.assertTrue(df['Creator'].tolist()[0]=='Smith, Joe P.; Louis, Sandra K.')
+        self.assertTrue(df['Title'].tolist()[0]=='Tests with Local Projections')
+        self.assertTrue(df.shape[0]==1)
+
+
+
 
 if __name__=="__main__":
     unittest.main(argv=['first-arg-is-ignored'], exit=False)
