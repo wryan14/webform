@@ -51,7 +51,7 @@ After clicking the link, the landing page provides a drop-down with three choice
 After the application redirects Economist 1 to the new publication form, he immediately notices which fields are and are not required.  His preprint has a DOI, so he decides to fill in the DOI and is pleased to see the majority of the fields are auto-populated.  The populated entries look pretty good, but he makes a few corrections and additions.  Economist 1 is in a hurry, so he fills in the remaining required fields and decides to skip the remaining optional ones. He clicks the submit button at the bottom of the page and is redirected to a success page, which lets him know that his publication was submitted for review. 
 
 **Economist 2**
-After selecting the option to edit existing metadata, Economist 2 is prompted to provide a DOI or URL which pulls up the metadata of the record in question. She changes her name in the citation field and clicks submit before being redirected to a success page. 
+After selecting the option to edit existing metadata, Economist 2 is redirected to a page with a table of existing records. Economist 2 filters the table to find the record she wishes to update. She checks a radio button next to the record and hits the Edit button. The page redirects, and Economist 2 is provided a filled out form where she can edit her name in the citation field.  She does so, and clicks submit before being redirected to a success page. 
 
 **Economist 3**
 Changes in publication status from forthcoming to published are so commonplace they warrant a separate action. The app redirects Economist 3 to a search bar, where he checks a box next to his recently published paper and clicks submit before redirecting to a success page. 
