@@ -44,7 +44,7 @@ The link from the economist web page will be the main entry point into the appli
 ### Landing page
 
 **Economist 1, 2, and 3**
-After clicking the link, the landing page provides a drop-down with three choices.  Economist 1 selects the option to add a new publication, Economist 2 chooses to edit an existing entry, and Economist 3 decides to update publication status.  Each selection redirects the economist to the appropriate form. 
+After clicking the link, the landing page provides buttons or links  with three choices.  Economist 1 selects the option to add a new publication, Economist 2 chooses to edit an existing entry, and Economist 3 decides to update publication status.  Each selection redirects the economist to the appropriate form. 
 
 ### Form layout and Submit
 **Economist 1**
@@ -118,7 +118,7 @@ from forms import *
 
 @app.route('/')
 def home():
-    # welcome_page will have the dropdown
+    # welcome_page will have three buttons or links for each form choice
     return render_template('welcome_page.html')
 
 @app.route('/new', methods=[REQUIRED FOR FORM])
