@@ -3,18 +3,59 @@
 {% block content %}
 
 <!--temporary dropdown button; will improve later -->
-<h1>WebForm Landing Page!</h1>
-<div class="jumbotron">
-<div class="dropdown show">
-	<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  Dropdown link
-	</a>
-	<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-	  <a class="dropdown-item" href="{{ url_for('newpub') }}">Add publication</a>
-	  <a class="dropdown-item" href="{{ url_for('dash_app') }}">Edit publication</a>
-	  <a class="dropdown-item" href="{{ url_for('updatepub') }}">Update forthcoming paper</a>
+<div class="container">
+	<div class="card-deck mt-5">
+		<div class="row">
+			<div class="col col-lg-4 col-md-12 col-sm-12 col-xs-12">
+				<div class="card card-body">
+					<img src="https://live.staticflickr.com/213/491726079_4f46636859_b.jpg" alt=""
+						class="card-img-top">
+					<h5 class="card-title">Card title</h5>
+					<p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut necessitatibus
+						maxime
+						repellendus quam! Officiis dolore at natus consectetur quod maiores!</p>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item"><button
+								onclick="location.href=&quot;{{url_for('newpub')}}&quot;"
+								class="btn btn-dark btn-block">New publication</button></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col col-lg-4 col-md-12 col-sm-12 col-xs-12">
+				<div class="card card-body">
+					<img src="https://live.staticflickr.com/213/491726079_4f46636859_b.jpg" alt=""
+						class="card-img-top justify-content-center">
+					<h5 class="card-title">Card title</h5>
+					<p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut necessitatibus
+						maxime
+						repellendus quam! Officiis dolore at natus consectetur quod maiores!</p>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item"><button
+								onclick="location.href=&quot;{{url_for('dash_app')}}&quot;"
+								class="btn btn-dark btn-block">Edit publication</button></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card card-body">
+					<img src="https://live.staticflickr.com/213/491726079_4f46636859_b.jpg" alt=""
+						class="card-img-top">
+					<h5 class="card-title">Card title</h5>
+					<p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut necessitatibus
+						maxime
+						repellendus quam! Officiis dolore at natus consectetur quod maiores!</p>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item"><button
+								onclick="location.href=&quot;{{url_for('updatepub')}}&quot;"
+								class="btn btn-dark btn-block">Forthcoming updates</button></li>
+					</ul>
+				</div>
+			</div>
+		</div>
 	</div>
-  </div>
+
+
 </div>
+
 
 {% endblock %}

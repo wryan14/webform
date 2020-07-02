@@ -19,6 +19,15 @@ body {
 
 @media (max-width: 768px) {
   .navbar .nav-link:hover {
-    border-bottom: none; } }
+    border-bottom: none; }
+
+  .card-img-top {
+    display: none; }
+
+  .card-title {
+    text-align: center; } }
+img {
+  max-width: 288px;
+  max-height: 192px; }
 
 /*# sourceMappingURL=custom.css.map */

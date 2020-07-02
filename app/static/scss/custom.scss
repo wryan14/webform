@@ -30,4 +30,16 @@ body{
 			border-bottom: none;
 		}
 	}
+	.card-img-top{
+		display: none;
+	}
+	.card-title{
+		text-align: center;
+	}
+
+}
+
+img{
+	max-width: 288px;
+	max-height: 192px;
 }
