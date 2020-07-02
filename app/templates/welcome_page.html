@@ -3,17 +3,18 @@
 {% block content %}
 
 <!--temporary dropdown button; will improve later -->
+
+
+
 <div class="container">
 	<div class="card-deck mt-5">
 		<div class="row">
 			<div class="col col-lg-4 col-md-12 col-sm-12 col-xs-12">
 				<div class="card card-body">
-					<img src="https://live.staticflickr.com/213/491726079_4f46636859_b.jpg" alt=""
-						class="card-img-top">
-					<h5 class="card-title">Card title</h5>
-					<p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut necessitatibus
-						maxime
-						repellendus quam! Officiis dolore at natus consectetur quod maiores!</p>
+					<img src="{{url_for('static', filename='images/jason-weingardt-QodGaSHzbzo-unsplash.jpg')}}" alt=""
+					class="card-img-top">
+					<h5 class="card-title mt-1">New publication</h5>
+					<p class="card-text">Need to add existing or forthcoming research to your webpage? Use the following link to notify the Research Library of your latest publication.</p>
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item"><button
 								onclick="location.href=&quot;{{url_for('newpub')}}&quot;"
@@ -23,12 +24,10 @@
 			</div>
 			<div class="col col-lg-4 col-md-12 col-sm-12 col-xs-12">
 				<div class="card card-body">
-					<img src="https://live.staticflickr.com/213/491726079_4f46636859_b.jpg" alt=""
-						class="card-img-top justify-content-center">
-					<h5 class="card-title">Card title</h5>
-					<p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut necessitatibus
-						maxime
-						repellendus quam! Officiis dolore at natus consectetur quod maiores!</p>
+					<img src="{{url_for('static', filename='images/jad-limcaco-uGvefvoINTs-unsplash.jpg')}}" alt=""
+					class="card-img-top">
+					<h5 class="card-title mt-1">Edit publication</h5>
+					<p class="card-text">Webpage contain and error or out-of-date information? The following link allows you to find your paper and submit the correction.&nbsp;&nbsp;&nbsp;&nbsp;</p>
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item"><button
 								onclick="location.href=&quot;{{url_for('dash_app')}}&quot;"
@@ -38,12 +37,10 @@
 			</div>
 			<div class="col">
 				<div class="card card-body">
-					<img src="https://live.staticflickr.com/213/491726079_4f46636859_b.jpg" alt=""
+					<img src="{{url_for('static', filename='images/minxi-mao-EmbxJz4xW10-unsplash.jpg')}}" alt=""
 						class="card-img-top">
-					<h5 class="card-title">Card title</h5>
-					<p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut necessitatibus
-						maxime
-						repellendus quam! Officiis dolore at natus consectetur quod maiores!</p>
+					<h5 class="card-title mt-1">Forthcoming updates</h5>
+					<p class="card-text">Forthcoming paper finally published? If you've previously notified the Research Library and need to provide the publication year, use this link.</p>
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item"><button
 								onclick="location.href=&quot;{{url_for('updatepub')}}&quot;"
