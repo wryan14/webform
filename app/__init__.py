@@ -20,6 +20,7 @@ local_url = "http://localhost:5000"
 
 # create dash application for editting table
 df = cdm_pull('not_needed_right_now')
+df = df.reset_index(drop=True)
 # dapp = dash application (i.e. table lookup)
 dapp = dash.Dash(__name__, server=app, url_base_pathname="/edit_table/")
 dapp.title = "Edit webform"
@@ -36,6 +37,23 @@ dapp.layout = html.Div([
             {'name': 'DOI', 'id': 'DOI_Number', 'type': 'text'},
             {'name': 'Link', 'id': 'Public address', 'type': 'text'}
         ],
+        virtualization=True,
+        style_header={'backgroundColor': '#3b7cca', 'color': '#ffffff', 'text-align': 'center', 'font-family': 'sans-serif', 'font-weight': '700', 'width': '357.033px', 'margin-bottom': '20%'},
+
+        style_cell={'font-family': 'sans-serif',
+        'text-align': 'center', 'whitespace': 'normal', 'height': 'auto'},
+
+        style_cell_conditional=[
+            {
+                'if': {'column_id': 'Title'},
+                'textAlign': 'left'
+            },
+            {
+                'if': {'column_id': 'Creator'},
+                'textAlign': 'left'
+            }
+        ],
+        style_as_list_view=True,
         data=df.to_dict('records'),
         row_selectable="single",
         selected_rows=[],
@@ -49,6 +67,13 @@ dapp.layout = html.Div([
             'overflow': 'hidden',
             'textOverflow': 'ellipsis',
         },
+        
+        style_data_conditional=[
+            {
+                'if': {'row_index': 'odd'},
+                'backgroundColor': '#d4e3f7',
+            }
+        ],
     ),
     html.Div(id='datatable-interactivity-container'),
     html.A(html.Button('Edit records'), href='{}/edit'.format(local_url))
