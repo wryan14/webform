@@ -40,9 +40,11 @@ html.Div([
             {'name': 'DOI', 'id': 'DOI_Number', 'type': 'text'},
             {'name': 'Link', 'id': 'Public address', 'type': 'text'}
         ],
-        virtualization=True,
-        page_action='none',
-        style_header={'backgroundColor': '#3d5a80', 'color': '#ffffff', 'text-align': 'center', 'font-family': 'sans-serif', 'font-weight': '700', 'width': 'auto', 'margin-bottom': '20%'},
+        virtualization=False,
+        page_action='native',
+        page_current=0,
+        page_size=10,
+        style_header={'backgroundColor': '#3d5a80', 'color': '#ffffff', 'text-align': 'center', 'font-family': 'sans-serif', 'font-weight': '700', 'width': 'auto', 'min-width': '100px', 'margin-bottom': '20%'},
 
         style_cell={'font-family': 'sans-serif',
         'text-align': 'center', 'whitespace': 'normal', 'height': 'auto'},
@@ -62,6 +64,7 @@ html.Div([
         row_selectable="single",
         selected_rows=[],
         filter_action='native',
+        sort_action='native',
 
         style_table={
             'height': 400,
