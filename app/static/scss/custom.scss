@@ -21,6 +21,13 @@ body{
 		transition: border 0.2s;
 		border-bottom: 1px solid white;
 	}
-	background-color: #3d5a80;
-	
+	background-color: #3d5a80;	
+}
+
+@media(max-width: 768px){
+	.navbar{
+		.nav-link:hover{
+			border-bottom: none;
+		}
+	}
 }

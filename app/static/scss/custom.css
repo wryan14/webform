@@ -17,4 +17,8 @@ body {
     transition: border 0.2s;
     border-bottom: 1px solid white; }
 
+@media (max-width: 768px) {
+  .navbar .nav-link:hover {
+    border-bottom: none; } }
+
 /*# sourceMappingURL=custom.css.map */
