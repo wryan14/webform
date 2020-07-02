@@ -18,7 +18,7 @@
 
 <body>
 	<div class="nav navbar navbar-dark navbar-expand-md">
-		<a href="" class="navbar-brand">
+		<a href="{{url_for('home')}}" class="navbar-brand">
 			<h3 class="mb-0">Economist WebForm</h3>
 		</a>
 		<button class="navbar-toggler" data-toggle="collapse" data-target="#mainNavbar">
@@ -27,16 +27,16 @@
 		<div class="collapse navbar-collapse" id="mainNavbar">
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<a href="" class="nav-link">New</a>
+					<a href="{{url_for('newpub')}}" class="nav-link">New</a>
 				</li>
 				<li class="nav-item">
-					<a href="" class="nav-link">Edit</a>
+					<a href="{{url_for('editpub')}}" class="nav-link">Edit</a>
 				</li>
 				<li class="nav-item">
-					<a href="" class="nav-link">Forthcoming</a>
+					<a href="{{url_for('updatepub')}}" class="nav-link">Forthcoming</a>
 				</li>
 				<li class="nav-item">
-					<a href="" class="nav-link">Ask-A-Librarian</a>
+					<a href="mailto: example@example.com" class="nav-link">Ask-A-Librarian</a>
 				</li>
 			</ul>
 		</div>
@@ -44,6 +44,33 @@
 
 	{% block content %}
 
+	<div class="container">
+
+		<div class="card-deck">
+			<div class="card card-body h-100 justify-content-center">
+				<img src="https://live.staticflickr.com/213/491726079_4f46636859_b.jpg" alt="" class="card-img-top">
+				<h5 class="card-title">Card title</h5>
+				<p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut necessitatibus maxime repellendus quam! Officiis dolore at natus consectetur quod maiores!</p>
+				<p><button class="btn btn-primary">New Publication</h4></button></p>
+			</div>
+			<div class="card card-body h-100 justify-content-center rounded">
+				<img src="https://live.staticflickr.com/213/491726079_4f46636859_b.jpg" alt="" class="card-img-top">
+				<h5 class="card-title">Card title</h5>
+				<p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut necessitatibus maxime repellendus quam! Officiis dolore at natus consectetur quod maiores!</p>
+				<p><button class="btn btn-primary">Edit Publication</h4></button></p>
+			</div>
+			<div class="card card-body h-100 justify-content-center">
+				<img src="https://live.staticflickr.com/213/491726079_4f46636859_b.jpg" alt="" class="card-img-top">
+				<h5 class="card-title">Card title</h5>
+				<p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut necessitatibus maxime repellendus quam! Officiis dolore at natus consectetur quod maiores!</p>
+				<p><button class="btn btn-primary">Update Publication</h4></button></p>
+				
+			</div>
+
+		</div>
+
+
+	</div>
 
 
 	{% endblock %}
