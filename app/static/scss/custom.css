@@ -4,11 +4,15 @@ body {
   font-family: "Times New Roman", Times, serif; }
 
 .navbar {
-  font-weight: 100; }
-  .navbar .navbar-barnd h3 {
+  font-weight: 100;
+  background-color: #3d5a80; }
+  .navbar .navbar-brand h3 {
+    color: white;
     font-weight: 100; }
   .navbar .nav-item {
     font-size: 1.4rem; }
+  .navbar .nav-link {
+    color: white; }
   .navbar .nav-link:hover {
     transition: border 0.2s;
     border-bottom: 1px solid white; }
