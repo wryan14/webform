@@ -6,6 +6,7 @@ from dash.dependencies import Input, Output
 import dash_table
 import dash_html_components as html
 import dash_core_components as dcc
+import dash_bootstrap_components as dbc  
 import datetime
 
 import pandas as pd
@@ -22,12 +23,14 @@ local_url = "http://localhost:5000"
 df = cdm_pull('not_needed_right_now')
 df = df.reset_index(drop=True)
 # dapp = dash application (i.e. table lookup)
-dapp = dash.Dash(__name__, server=app, url_base_pathname="/edit_table/")
+dapp = dash.Dash(__name__, server=app, url_base_pathname="/edit_table/", external_stylesheets=[dbc.themes.BOOTSTRAP])
 dapp.title = "Edit webform"
 
 dapp.server.secret_key = str(uuid.uuid4())
 
-dapp.layout = html.Div([
+dapp.layout = dbc.Container(
+html.Div([
+    html.H1('Select Record to Edit', className="p-5"),
     dash_table.DataTable(
         id='datatable-interactivity',
         columns=[
@@ -38,7 +41,8 @@ dapp.layout = html.Div([
             {'name': 'Link', 'id': 'Public address', 'type': 'text'}
         ],
         virtualization=True,
-        style_header={'backgroundColor': '#3b7cca', 'color': '#ffffff', 'text-align': 'center', 'font-family': 'sans-serif', 'font-weight': '700', 'width': '357.033px', 'margin-bottom': '20%'},
+        page_action='none',
+        style_header={'backgroundColor': '#3d5a80', 'color': '#ffffff', 'text-align': 'center', 'font-family': 'sans-serif', 'font-weight': '700', 'width': 'auto', 'margin-bottom': '20%'},
 
         style_cell={'font-family': 'sans-serif',
         'text-align': 'center', 'whitespace': 'normal', 'height': 'auto'},
@@ -71,13 +75,18 @@ dapp.layout = html.Div([
         style_data_conditional=[
             {
                 'if': {'row_index': 'odd'},
-                'backgroundColor': '#d4e3f7',
+                'backgroundColor': '#E9ECEF',
             }
         ],
+        css=[
+
+        ]
     ),
-    html.Div(id='datatable-interactivity-container'),
-    html.A(html.Button('Edit records'), href='{}/edit'.format(local_url))
-])
+    html.Br(),
+    html.Hr(),
+    html.Div(id='datatable-interactivity-container', className='p-3'),
+    html.A(html.Button('Edit records', className="btn btn-success"), href='{}/edit'.format(local_url))
+]))
 
 
 @dapp.callback(
@@ -92,9 +101,9 @@ def update_display(rows, derived_virtual_selected_rows):
     selected_rows=[rows[i] for i in derived_virtual_selected_rows]
 
     try:
-        data = html.H1(selected_rows[0]['Title'])
+        data = html.H3(selected_rows[0]['Title'])
     except IndexError:
-        data = html.H1('Selected Data...')
+        data = html.H3('Selected Data...')
 
     flask.session['data'] = pd.DataFrame(selected_rows).to_json()
 
