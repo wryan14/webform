@@ -1,5 +1,16 @@
 body {
   color: #1f271b;
-  background-color: #E9ECEF; }
+  background-color: #E9ECEF;
+  font-family: "Times New Roman", Times, serif; }
+
+.navbar {
+  font-weight: 100; }
+  .navbar .navbar-barnd h3 {
+    font-weight: 100; }
+  .navbar .nav-item {
+    font-size: 1.4rem; }
+  .navbar .nav-link:hover {
+    transition: border 0.2s;
+    border-bottom: 1px solid white; }
 
 /*# sourceMappingURL=custom.css.map */

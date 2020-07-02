@@ -1,4 +1,19 @@
 body{
 	color: #1f271b;
 	background-color: #E9ECEF;
+	font-family: "Times New Roman", Times, serif;
+}
+
+.navbar{
+	font-weight: 100;
+	.navbar-barnd h3 {
+		font-weight: 100;
+	}
+	.nav-item {
+		font-size: 1.4rem;
+	}
+	.nav-link:hover {
+		transition: border 0.2s;
+		border-bottom: 1px solid white;
+	}
 }

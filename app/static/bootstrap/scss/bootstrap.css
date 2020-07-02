@@ -6490,19 +6490,5 @@ a.text-dark:hover, a.text-dark:focus {
   .table-bordered th,
   .table-bordered td {
     border: 1px solid #ddd !important; } }
-body {
-  color: #1f271b;
-  background-color: #E9ECEF;
-  font-family: "Times New Roman", Times, serif; }
 
-.navbar {
-  font-weight: 100; }
-  .navbar .navbar-barnd h3 {
-    font-weight: 100; }
-  .navbar .nav-item {
-    font-size: 1.4rem; }
-  .navbar .nav-link:hover {
-    transition: border 0.2s;
-    border-bottom: 1px solid white; }
-
-/*# sourceMappingURL=main.css.map */
+/*# sourceMappingURL=bootstrap.css.map */
