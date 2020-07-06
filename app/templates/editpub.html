@@ -1,17 +1,63 @@
 {% extends "base.html" %}
-
+{% import "bootstrap/wtf.html" as wtf %}
 {% block content %}
-<h1>Edit Publication</h1>
-<form action="" method="POST">
-	Find CDM record <input type="text" name="cdmlookup">
-	<input type="submit" value="Lookup">
-</form>
-<p>Use the following form to edit publications</p>
-<form method="POST">
-	<!-- add hidden_tag for CRSF security -->
-	{{ form.hidden_tag() }}
-	{{ form.name.label }} {{ form.name() }}
-	{{ form.submit() }}
-</form>
 
-{% endblock %}
+<div class="container">
+	<div class="row">
+		<div class="col-1"></div>
+
+		<div class="col-10 ml-4 mr-4">
+			<div class="jumbotron rounded" style="background-color: white;" id="jumbodoi">
+				<!--Add form fields here-->
+				<h1 class="text-center mb-4">Edit Publication</h1>
+				<div class="row">
+					<div class="col-1"></div>
+					<div class="col-10">
+						<div class="jumbotron rounded border-3 text-white"
+							style="background: #000 url(&quot;{{url_for('static', filename='images/blurred-background-green.jpg')}}&quot;) top left no-repeat;" alt="">
+							<div class="row">
+								<div class="col"></div>
+								<div class="col">
+									<a href="{{url_for('dash_app')}}"
+										class="btn btn-dark btn-lg justify-content-center btn-block mt-2" role="button">Select
+										Record</a>
+								</div>
+								<div class="col"></div>
+							</div>
+						</div>
+
+						<!--Actual form-->
+						<form method="POST">
+							<!--add hidden_tag for CRSF security-->
+							{{ form.hidden_tag() }}
+							<div class="form-group">
+								{{ wtf.form_field(form.name)}}
+
+								{{ form.submit() }}
+
+							</div>
+
+						</form>
+
+
+						<div class="col-1"></div>
+
+
+
+
+					</div>
+					<div class="row">
+
+					</div>
+
+
+				</div>
+			</div>
+
+			<div class="col-1"></div>
+
+		</div>
+
+	</div>
+
+	{% endblock %}
