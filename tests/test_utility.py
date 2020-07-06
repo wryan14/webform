@@ -40,9 +40,9 @@ class UtilityTest(unittest.TestCase):
         '''Check to make sure the correctly carries over form XML to dataframe'''
         df = cdm_pull('argument not needed in test environment')
 
-        self.assertTrue(df['Creator'].tolist()[0]=='Smith, Joe P.; Louis, Sandra K.')
-        self.assertTrue(df['Title'].tolist()[0]=='Tests with Local Projections')
-        self.assertTrue(df.shape[0]==2)
+        self.assertTrue(df['Creator'].tolist()[0]=='McGucken, Correna; Farington, Boote; St., Courtnay')
+        self.assertTrue(df['Title'].tolist()[0]=='She Gods of Shark Reef')
+        self.assertTrue(df.shape[0]==1000)
 
 
 
