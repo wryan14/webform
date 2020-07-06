@@ -14,8 +14,8 @@
 					<div class="col-1"></div>
 					<div class="col-10">
 						<div class="jumbotron rounded border-3 text-white"
-							style="background: #000 url(&quot;{{url_for('static', filename='images/blurred-background-green.jpg')}}&quot;)"
-							alt="" top center no-repeat;''>
+							style="background: #000 url(&quot;{{url_for('static', filename='images/elevenphotographs-ueyhzkL1_0k-unsplash.jpg')}}&quot;) top center no-repeat"
+							alt="">
 							<h4 class="text-center mb-4">DOI Search</h4>
 
 							<form action="" method="POST">
@@ -29,39 +29,39 @@
 								</div>
 							</form>
 						</div>
-					
-					<!--Actual form-->
-					<form method="POST">
-						<!--add hidden_tag for CRSF security-->
-						{{ form.hidden_tag() }}
-						<div class="form-group">
-							{{ wtf.form_field(form.name)}}
-							{{ wtf.form_field(form.doi)}}
-							{{ form.submit() }}
-			
-						</div>
-						
-					</form>
-					
-					
-					<div class="col-1"></div>
+
+						<!--Actual form-->
+						<form method="POST">
+							<!--add hidden_tag for CRSF security-->
+							{{ form.hidden_tag() }}
+							<div class="form-group">
+								{{ wtf.form_field(form.name)}}
+								{{ wtf.form_field(form.doi)}}
+								{{ form.submit() }}
+
+							</div>
+
+						</form>
 
 
+						<div class="col-1"></div>
+
+
+
+
+					</div>
+					<div class="row">
+
+					</div>
 
 
 				</div>
-				<div class="row">
-
-				</div>
-
-
 			</div>
-		</div>
 
-		<div class="col-1"></div>
+			<div class="col-1"></div>
+
+		</div>
 
 	</div>
 
-</div>
-
-{% endblock %}
+	{% endblock %}
