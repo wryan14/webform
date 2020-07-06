@@ -11,20 +11,20 @@ class NewPublication(FlaskForm):
     '''Creates form field for new publication'''
 
     # adding small set of dummy data for setup purposes
-    doi = StringField('DOI: ')
-    name = StringField("Name: ", validators=[DataRequired()])
+    doi = StringField('DOI ')
+    title = StringField("Title ", validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 
 class UpdatePublication(FlaskForm):
     '''Creates form fields for update publication'''
 
-    name = StringField("Name: ")
+    title = StringField("Title ")
     submit = SubmitField('Submit')
 
 
 class UpdatePublicationStatus(FlaskForm):
     '''Creates form fields for publication status'''
 
-    name = StringField("Name: ")
+    title = StringField("Title ")
     submit = SubmitField('Submit')

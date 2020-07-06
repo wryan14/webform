@@ -14,20 +14,20 @@ def home():
 @app.route('/new', methods=['GET', 'POST'])
 def newpub():
     '''Renders new publication web-form'''
-    name = ''
+    title = ''
     doi = ''
     if 'doifind' in request.form:
         doi = request.form['doifind']
         try:
-            name = crossref_lookup(doi, 'title')[0]
+            title = crossref_lookup(doi, 'title')[0]
             # make sure full url was not included
-            name.replace('https://doi.org', '').replace('http://doi.org', '')
+            title.replace('https://doi.org', '').replace('http://doi.org', '')
         except TypeError:
             pass
 
     form = NewPublication()
-    if name != '':
-        form.name.data = name
+    if title != '':
+        form.title.data = title
 
     if doi != '':
         form.doi.data = doi
@@ -36,7 +36,7 @@ def newpub():
         if form.validate_on_submit():
             print(form.doi.data, 1)
             session['doi'] = form.doi.data
-            session['name'] = form.name.data
+            session['title'] = form.title.data
 
             return redirect(url_for('success_new'))
 
@@ -54,39 +54,38 @@ def editpub():
         
         
     try:
-        name=json.loads(flask.session['data'])
-        name = name['Title']['0']
-        print(name)
+        title=json.loads(flask.session['data'])
+        title = title['Title']['0']
     except KeyError:
-        name = None
+        title = None
     
 
     form = UpdatePublication()
-    form.name.data = name
+    form.title.data = title
 
     if form.validate_on_submit():
 
-        name = form.name.data
-        form.name.data = ''
+        title = form.title.data
+        form.title.data = ''
         return redirect(url_for('success_edit'))
 
-    return render_template('editpub.html', form=form, name=name)
+    return render_template('editpub.html', form=form, title=title)
 
 
 @app.route('/update', methods=['GET', 'POST'])
 def updatepub():
     '''Renders new publication web-form'''
 
-    name = False
+    title = False
     form = UpdatePublicationStatus()
 
     if form.validate_on_submit():
 
-        name = form.name.data
-        form.name.data = ''
+        title = form.title.data
+        form.title.data = ''
         return redirect(url_for('success_update'))
 
-    return render_template('updatepub.html', form=form, name=name)
+    return render_template('updatepub.html', form=form, title=title)
 
 
 @app.route('/success_new')
