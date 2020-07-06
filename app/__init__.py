@@ -1,5 +1,6 @@
 from flask import Flask, url_for
 import flask
+from flask_bootstrap import Bootstrap
 from config import Config
 import dash
 from dash.dependencies import Input, Output
@@ -14,7 +15,7 @@ import uuid
 
 app = Flask(__name__)
 app.config.from_object(Config)
-
+bootstrap = Bootstrap(app)
 from app.utility import cdm_pull
 
 local_url = "http://localhost:5000"

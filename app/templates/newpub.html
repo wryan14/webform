@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% import "bootstrap/wtf.html" as wtf %}
 {% block content %}
 
 <div class="container">
@@ -31,7 +31,19 @@
 								</div>
 							</form>
 						</div>
-					</div>
+					
+					<!--Actual form-->
+					<form method="POST">
+						<!--add hidden_tag for CRSF security-->
+						{{ form.hidden_tag() }}
+						<div class="form-group">
+							<label for="title">{{form.name.label}}</label>
+							<input type="text" class="form-control">
+						</div>
+						
+					</form>
+					
+					
 					<div class="col-1"></div>
 
 
@@ -52,12 +64,6 @@
 
 </div>
 
-<form action="" method="POST">
-	CrossRef Lookup <input type="text" name="doifind">
-	<input type="submit" value="Lookup">
-</form>
-
-<p>Use the following form to add a new publication</p>
 <form method="POST">
 	<!-- add hidden_tag for CRSF security -->
 	{{ form.hidden_tag() }}
@@ -65,5 +71,7 @@
 	{{form.doi.label}}{{form.doi()}}
 	{{ form.submit() }}
 </form>
+
+{{wtf.quick_form(form)}}
 
 {% endblock %}
