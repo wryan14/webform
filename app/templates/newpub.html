@@ -37,8 +37,10 @@
 						<!--add hidden_tag for CRSF security-->
 						{{ form.hidden_tag() }}
 						<div class="form-group">
-							<label for="title">{{form.name.label}}</label>
-							<input type="text" class="form-control">
+							{{ wtf.form_field(form.name)}}
+							{{ wtf.form_field(form.doi)}}
+							{{ form.submit() }}
+			
 						</div>
 						
 					</form>
@@ -63,15 +65,5 @@
 	</div>
 
 </div>
-
-<form method="POST">
-	<!-- add hidden_tag for CRSF security -->
-	{{ form.hidden_tag() }}
-	{{ form.name.label }} {{ form.name() }}
-	{{form.doi.label}}{{form.doi()}}
-	{{ form.submit() }}
-</form>
-
-{{wtf.quick_form(form)}}
 
 {% endblock %}
