@@ -8,16 +8,44 @@ import os
 directory = os.path.dirname(__file__)
 static_path = os.path.join(directory, 'static')
 
-
-def crossref_lookup(doi_string, field):
-    '''Uses crossref API to find record by DOI string'''
-    w = Works()  # sets up crossref API object
-    item = w.doi(doi_string)
-    try:
-        return item[field]
-    except (KeyError, IndexError, TypeError):
-        pass
-
+class CRef():
+    '''Parses DOI looking for common form fields'''
+    def __init__(self, doi):
+        # make sure prefix is removed
+        self.doi = doi.strip('https://doi.org/').strip('http://doi.org/').strip()
+        
+        w = Works()
+        self.res = w.doi(self.doi)
+        
+        self.title = self.res['title'][0].replace('\t', ' ').replace('\n', ' ').replace('  ', ' ')
+        self.title = ' '.join([x for x in self.title.split() if x != ' '])
+        
+        self.publisher = self.tryfield('publisher')
+        try:
+            self.journal_name = self.tryfield('container-title')[0]
+        except IndexError:
+            self.journal_name = None
+        
+        self.author_find() # get authors
+        
+        try:
+            self.year = self.res['indexed']['date-parts'][0][0]
+        except (KeyError, IndexError):
+            self.year = None
+        
+    def author_find(self):
+        self.author_list = []
+        for auth in self.res['author']:
+            try:
+                self.author_list.append('{}, {}'.format(auth['family'], auth['given']))
+            except KeyError:
+                pass
+        
+    def tryfield(self, field):
+        try:
+            return self.res[field]
+        except KeyError:
+            return None
 
 def cdm_api_trans():
     '''Transforms CDM API FWP output into a dataframe for easier use.

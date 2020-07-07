@@ -1,7 +1,7 @@
 from app import app, dapp
 from flask import render_template, redirect, url_for, session, request
 from .forms import NewPublication, UpdatePublication, UpdatePublicationStatus
-from .utility import crossref_lookup, cdm_pull
+from .utility import CRef, cdm_pull
 import flask
 import json
 
@@ -19,9 +19,8 @@ def newpub():
     if 'doifind' in request.form:
         doi = request.form['doifind']
         try:
-            title = crossref_lookup(doi, 'title')[0]
-            # make sure full url was not included
-            title.replace('https://doi.org', '').replace('http://doi.org', '')
+            cr = CRef(doi)
+            title = cr.title
         except TypeError:
             pass
 

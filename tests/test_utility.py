@@ -5,7 +5,7 @@ import sys
 testdir = os.path.dirname(__file__)
 srcdir = '..'
 sys.path.insert(0, os.path.join(testdir, srcdir))
-from app.utility import crossref_lookup, cdm_pull  
+from app.utility import CRef, cdm_pull  
 
 directory = os.path.dirname(os.path.abspath(__file__))
 logs_path = os.path.join(directory, 'logs')
@@ -19,10 +19,31 @@ logging.basicConfig(level=logging.DEBUG, filename=logs_file, filemode='a')
 
 class UtilityTest(unittest.TestCase):
 
-    def test_crossref_lookup(self):
+    def test_cref_doi(self):
         '''Make sure the crossref lookup utility function is operating correctly'''
-        name = crossref_lookup('10.17016/FEDS.2020.013', 'title')[0]
-        self.assertTrue(name=='Inflation at Risk')
+        cr = CRef('http://doi.org/10.17016/FEDS.2020.013')
+        self.assertTrue(cr.doi=='10.17016/FEDS.2020.013')
+    
+    def test_cref_author_list(self):
+        '''Ensure Cref returns correct author list'''
+        cr = CRef('10.17016/FEDS.2020.049')
+        self.assertTrue(cr.author_list == ['Bekaert, Geert', 'Engstrom, Eric', 'Ermolov, Andrey'])
+        
+    def test_cref_journal_title(self):
+        '''See if container-title returns journal on known DOI'''
+        cr = CRef('10.17016/FEDS.2020.049')
+        self.assertTrue(cr.journal_name=='Finance and Economics Discussion Series')
+
+    def test_remaining_cref_fields(self):
+        '''Quick check to make sure other fields are working; please not it is possible that if CrossRef's
+        Metadata changes, this might impact the validity of this test. '''
+        cr = CRef('10.31274/etd-180810-5803')
+        self.assertTrue(cr.journal_name==None)
+        self.assertTrue(cr.title=='Faculty perceptions regarding the infusion of global perspectives into the College of Agriculture and Life Sciences curriculum: A comparative study')
+        self.assertTrue(cr.publisher=='Iowa State University')
+        self.assertTrue(cr.author_list==['Magtoto, Ronaldo Lising'])
+        self.assertTrue(cr.year==2020)
+
 
     def test_cdm_pull_columns(self):
         '''Test to make sure columns correctly translate'''

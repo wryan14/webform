@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, FieldList
 from wtforms.validators import DataRequired
 '''
 These fields are dummy fields, and will be used as placeholders until I gather more information
@@ -14,6 +14,7 @@ class NewPublication(FlaskForm):
     doi = StringField('DOI ')
     title = StringField("Title ", validators=[DataRequired()])
     submit = SubmitField('Submit')
+    
 
 
 class UpdatePublication(FlaskForm):
