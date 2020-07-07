@@ -12,3 +12,4 @@ A list of high-level Todos for the first version of this project.
 - [ ] Convert dropdown into buttons on landing page
 
 - [ ] Add tool tips to certain fields
+- [ ] Correct bootstrap.min.js error, so panel opens on nav bar
