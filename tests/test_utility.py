@@ -38,7 +38,7 @@ class UtilityTest(unittest.TestCase):
         '''Quick check to make sure other fields are working; please not it is possible that if CrossRef's
         Metadata changes, this might impact the validity of this test. '''
         cr = CRef('10.31274/etd-180810-5803')
-        self.assertTrue(cr.journal_name==None)
+        self.assertTrue(cr.journal_name=='')
         self.assertTrue(cr.title=='Faculty perceptions regarding the infusion of global perspectives into the College of Agriculture and Life Sciences curriculum: A comparative study')
         self.assertTrue(cr.publisher=='Iowa State University')
         self.assertTrue(cr.author_list==['Magtoto, Ronaldo Lising'])

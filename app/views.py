@@ -14,13 +14,23 @@ def home():
 @app.route('/new', methods=['GET', 'POST'])
 def newpub():
     '''Renders new publication web-form'''
+    
     title = ''
     doi = ''
+    publisher = ''
+    publication = ''
+    year = ''
+ 
+
     if 'doifind' in request.form:
         doi = request.form['doifind']
         try:
             cr = CRef(doi)
             title = cr.title
+            publisher = cr.publisher 
+            publication = cr.journal_name 
+            year = str(cr.year)
+
         except TypeError:
             pass
 
@@ -30,12 +40,24 @@ def newpub():
 
     if doi != '':
         form.doi.data = doi
+    
+    if publisher != '':
+        form.publisher.data = publisher
+    
+    if publication != '':
+        form.publication.data = publication  
+    
+    if year != '':
+        form.year.data = year  
 
     if 'doifind' not in request.form:
         if form.validate_on_submit():
             print(form.doi.data, 1)
             session['doi'] = form.doi.data
             session['title'] = form.title.data
+            session['publisher'] = form.publisher.data  
+            session['publication'] = form.publication.data  
+            session['year'] = form.year.data 
 
             return redirect(url_for('success_new'))
 

@@ -24,14 +24,14 @@ class CRef():
         try:
             self.journal_name = self.tryfield('container-title')[0]
         except IndexError:
-            self.journal_name = None
+            self.journal_name = ''
         
         self.author_find() # get authors
         
         try:
             self.year = self.res['indexed']['date-parts'][0][0]
         except (KeyError, IndexError):
-            self.year = None
+            self.year = ''
         
     def author_find(self):
         self.author_list = []
@@ -45,7 +45,7 @@ class CRef():
         try:
             return self.res[field]
         except KeyError:
-            return None
+            return ''
 
 def cdm_api_trans():
     '''Transforms CDM API FWP output into a dataframe for easier use.

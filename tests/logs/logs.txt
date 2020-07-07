@@ -30,3 +30,11 @@ DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.crossref.org
 DEBUG:urllib3.connectionpool:https://api.crossref.org:443 "GET /works/10.17016/FEDS.2020.049 HTTP/1.1" 200 1931
 DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.crossref.org:443
 DEBUG:urllib3.connectionpool:https://api.crossref.org:443 "GET /works/10.31274/etd-180810-5803 HTTP/1.1" 200 1376
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.crossref.org:443
+DEBUG:urllib3.connectionpool:https://api.crossref.org:443 "GET /works/10.17016/FEDS.2020.049 HTTP/1.1" 200 1931
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.crossref.org:443
+DEBUG:urllib3.connectionpool:https://api.crossref.org:443 "GET /works/10.17016/FEDS.2020.013 HTTP/1.1" 200 1693
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.crossref.org:443
+DEBUG:urllib3.connectionpool:https://api.crossref.org:443 "GET /works/10.17016/FEDS.2020.049 HTTP/1.1" 200 1931
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.crossref.org:443
+DEBUG:urllib3.connectionpool:https://api.crossref.org:443 "GET /works/10.31274/etd-180810-5803 HTTP/1.1" 200 1376

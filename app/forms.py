@@ -13,6 +13,10 @@ class NewPublication(FlaskForm):
     # adding small set of dummy data for setup purposes
     doi = StringField('DOI ')
     title = StringField("Title ", validators=[DataRequired()])
+    publisher = StringField("Publisher ")
+    publication = StringField("Published in ")
+    year = StringField('Publication Year')
+ 
     submit = SubmitField('Submit')
     
 
