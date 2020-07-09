@@ -71,7 +71,7 @@ def newpub():
             db.session.commit()  
 
             return redirect(url_for('success_new'))
-
+    docs = Doc.query
     return render_template('newpub.html', form=form)
 
 

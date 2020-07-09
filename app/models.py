@@ -1,7 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy 
-from app import db
 
 # Dynamic author fields heavily borrows from https://www.rmedgar.com/blog/dynamic-fields-flask-wtf
+
+db = SQLAlchemy()
 
 class Doc(db.Model):
     """Stores docs."""

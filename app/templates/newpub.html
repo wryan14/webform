@@ -31,21 +31,56 @@
 						</div>
 
 						<!--Actual form-->
-						<form method="POST">
+						<form id="author-form" action="" method="POST" role="form">
 							<!--add hidden_tag for CRSF security-->
 							{{ form.hidden_tag() }}
 							<div class="form-group">
 								{{ wtf.form_field(form.title)}}
 								{{ wtf.form_field(form.doi)}}
-								{{wtf.form_field(form.publisher)}}
-								{{wtf.form_field(form.publication)}}
-								{{wtf.form_field(form.year)}}
+								{{ wtf.form_field(form.publisher) }}
+								{{ wtf.form_field(form.publication) }}
+								{{ wtf.form_field(form.year) }}
+								<a id="add" href="#">Add Author</a>
+								<div id="subforms-container">
+									{% for subform in form.authors %}
+										<div id="author-{{ loop.index0 }}-form" class="subform" data-index="{{ loop.index0 }}">
+											{{ subform.first_name.label }}
+											{{ subform.first_name }}
+					
+											{{ subform.last_name.label }}
+											{{ subform.last_name}}
+					
+											<a class="remove" href="#">Remove</a>
+										</div>
+									{% endfor %}
+								</div>
+
+
+
 								{{ form.submit() }}
 
 							</div>
 
 						</form>
+						{% if form.errors %}
+							{{ form.errors }}
+						{% endif %}
 
+						{# Form template #}
+						<div id="author-_-form" class="is-hidden" data-index="_">
+							<label for="authors-_-first_name">First Name</label>
+							<input id="authors-_-first_name" name="authors-_-first_name" type="text" value="">
+				
+							<label for="authors-_-last_name">Last Name</label>
+							<input id="authors-_-last_name" name="authors-_-last_name" type="text">
+				
+							<a class="remove" href="#">Remove</a>
+						</div>
+
+						{# Show submitted data #}
+						{% if data is defined %}
+							<p>Received data: {{ data }}</p>
+						{% endif %}
 
 						<div class="col-1"></div>
 

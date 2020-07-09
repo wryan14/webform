@@ -10,12 +10,12 @@ import dash_html_components as html
 import dash_core_components as dcc
 import dash_bootstrap_components as dbc  
 import datetime
+from .models import db
 
 import pandas as pd
 import uuid
 
 app = Flask(__name__)
-db = SQLAlchemy()
 app.config.from_object(Config)
 bootstrap = Bootstrap(app)
 db.init_app(app)
