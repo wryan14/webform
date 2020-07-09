@@ -1,4 +1,5 @@
 from flask import Flask, url_for
+from flask_sqlalchemy import SQLAlchemy
 import flask
 from flask_bootstrap import Bootstrap
 from config import Config
@@ -14,8 +15,12 @@ import pandas as pd
 import uuid
 
 app = Flask(__name__)
+db = SQLAlchemy()
 app.config.from_object(Config)
 bootstrap = Bootstrap(app)
+db.init_app(app)
+db.create_all(app=app)
+
 from app.utility import cdm_pull
 
 local_url = "http://localhost:5000"

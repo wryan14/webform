@@ -1,4 +1,5 @@
-from app import app, dapp
+from app import app, dapp, db  
+from .models import Doc, Author
 from flask import render_template, redirect, url_for, session, request
 from .forms import NewPublication, UpdatePublication, UpdatePublicationStatus
 from .utility import CRef, cdm_pull
@@ -58,6 +59,16 @@ def newpub():
             session['publisher'] = form.publisher.data  
             session['publication'] = form.publication.data  
             session['year'] = form.year.data 
+
+            new_doc = Doc()
+            db.session.add(new_doc)
+            for author in form.authors.data:
+                new_author = Author(**author)
+
+                #  add to doc database entry
+                new_doc.authors.append(new_author)
+            new_doc.title = form.title.data  
+            db.session.commit()  
 
             return redirect(url_for('success_new'))
 

@@ -6,3 +6,5 @@ structure is set up, we will work on connecting the database to the applciation.
 
 class Config(object):
     SECRET_KEY = 'nothingtoseehere'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
