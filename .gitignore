@@ -132,3 +132,5 @@ vi.swp
 *.db
 *.sqlite
 data.sqlite
+
+.vscode/
