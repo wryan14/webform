@@ -21,6 +21,9 @@ def newpub():
     publisher = ''
     publication = ''
     year = ''
+    authors = ''
+    lname = ''
+    fname = ''
  
 
     if 'doifind' in request.form:
@@ -31,11 +34,13 @@ def newpub():
             publisher = cr.publisher 
             publication = cr.journal_name 
             year = str(cr.year)
+            authors = cr.author_list
 
         except TypeError:
             pass
 
     form = NewPublication()
+
     if title != '':
         form.title.data = title
 
@@ -50,19 +55,27 @@ def newpub():
     
     if year != '':
         form.year.data = year  
+    
+    if authors != '':
+        print(authors)
+        lname = authors[0].split(',')[0].strip()
+        fname = authors[0].split(',')[1].strip()
+    for subform in form.authors:
+        subform.first_name.data = lname
+        subform.last_name.data = fname
 
     if 'doifind' not in request.form:
         if form.validate_on_submit():
-            print(form.doi.data, 1)
             session['doi'] = form.doi.data
             session['title'] = form.title.data
             session['publisher'] = form.publisher.data  
             session['publication'] = form.publication.data  
-            session['year'] = form.year.data 
-
+            session['year'] = form.year.data
+            
             new_doc = Doc()
             db.session.add(new_doc)
             for author in form.authors.data:
+                print(author)
                 new_author = Author(**author)
 
                 #  add to doc database entry
