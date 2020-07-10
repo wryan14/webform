@@ -57,12 +57,21 @@ def newpub():
         form.year.data = year  
     
     if authors != '':
-        print(authors)
-        lname = authors[0].split(',')[0].strip()
-        fname = authors[0].split(',')[1].strip()
-    for subform in form.authors:
-        subform.first_name.data = lname
-        subform.last_name.data = fname
+        for idx, auth_name in enumerate(authors):
+            lname = auth_name.split(',')[0].strip()
+            fname = auth_name.split(',')[1].strip()
+
+            if idx == 0:
+                form.authors[idx].first_name.data = fname 
+                form.authors[idx].last_name.data = lname
+            else:
+                form.authors.append_entry()
+                form.authors[idx].first_name.data = fname 
+                form.authors[idx].last_name.data = lname
+    
+        print(form.authors)
+
+
 
     if 'doifind' not in request.form:
         if form.validate_on_submit():

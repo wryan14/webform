@@ -41,20 +41,26 @@
 								{{ wtf.form_field(form.publication) }}
 								{{ wtf.form_field(form.year) }}
 								<a id="add" href="#">Add Author</a>
+								
+								<script>
+									function(){
+										addForm();
+									};
+								</script>
+
 								<div id="subforms-container">
 									{% for subform in form.authors %}
 										<div id="author-{{ loop.index0 }}-form" class="subform" data-index="{{ loop.index0 }}">
 											{{ subform.first_name.label }}
 											{{ subform.first_name }}
-					
+
 											{{ subform.last_name.label }}
-											{{ subform.last_name }}
-					
+											{{ subform.last_name}}
+
 											<a class="remove" href="#">Remove</a>
 										</div>
 									{% endfor %}
 								</div>
-
 
 
 								{{ form.submit() }}
@@ -89,7 +95,6 @@
 					<div class="row">
 
 					</div>
-
 
 				</div>
 			</div>
