@@ -71,29 +71,35 @@ def newpub():
                 form.authors[idx].last_name.data = lname
 
     if 'doifind' not in request.form:
-        if form.validate_on_submit():
-            session['doi'] = form.doi.data
-            session['title'] = form.title.data
-            session['publisher'] = form.publisher.data  
-            session['publication'] = form.publication.data  
-            session['year'] = form.year.data
-            
+        if form.validate_on_submit():            
             new_doc = Doc()
             db.session.add(new_doc)
             for author in form.authors.data:
                 new_author = Author(**author)
-
                 #  add to doc database entry
                 new_doc.authors.append(new_author)
+            
             new_doc.title = form.title.data
             new_doc.doi = form.doi.data.strip('https://doi.org/').strip('http://doi.org/')
             new_doc.publisher = form.publisher.data 
             new_doc.publication = form.publication.data
             new_doc.publication_year = form.year.data 
-
             new_doc.date_added = datetime.datetime.now()
-
+        
             db.session.commit()  
+            
+            db_results = Doc.query.get(new_doc.id)
+            print(db_results)
+            session['Title'] = db_results.title
+            session['Doi'] = db_results.doi 
+            
+            authors = Author.query.filter_by(doc_id=new_doc.id)
+            author_list = [(x.first_name, x.last_name) for x in authors.all()]
+            session['Author_list'] = author_list
+
+            session['Publication'] = db_results.publication
+            session['Publisher'] = db_results.publisher 
+
 
             return redirect(url_for('success_new'))
     docs = Doc.query

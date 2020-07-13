@@ -2,12 +2,46 @@
 
 {% block content %}
 
-<h3>Success!</h3>
-<p>Thanks for submitting your info.</p>
-<br>
-<ul>
-    <li>Title: {{session['title']}}</li>
-    <li>DOI: {{session['doi']}}</li>
-</ul>
+<div class="container">
+    <h1 class="mt-2 display-4">Success...</h1>
+    <p>Thank you for submitting your new publication!</p>
+    <div class="jumbotron p-4 border bg-white">
+
+        <table class="table table-borderless m-5 p-5" id="borderless">
+            <tbody>
+                <tr>
+                    <td class="border-0"><strong>Title</strong></td>
+                    <td class="border-0"></td>
+                    <td class="border-0">{{ session['Title'] }}</td>
+                </tr>
+
+                <tr>
+                    <td class="border-0"><strong>Authors</strong></td>
+                    <td class="border-0"></td>
+                    <td class="border-0">
+                        {% for tup in session['Author_list'] %}
+                        {{tup[0]}} {{tup[1]}}<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border-0"><strong>Doi</strong></td>
+                    <td class="border-0"></td>
+                    <td class="border-0">{{ session['Doi'] }}</td>
+                </tr>
+                <tr>
+                    <td class="border-0"><strong>Publisher</strong></td>
+                    <td class="border-0"></td>
+                    <td class="border-0">{{ session['Publisher'] }}</td>
+                </tr>
+                <tr>
+                    <td class="border-0"><strong>Publication</strong></td>
+                    <td class="border-0"></td>
+                    <td class="border-0">{{ session['Publication'] }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 {% endblock %}
