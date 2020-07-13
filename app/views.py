@@ -5,6 +5,7 @@ from .forms import NewPublication, UpdatePublication, UpdatePublicationStatus
 from .utility import CRef, cdm_pull
 import flask
 import json
+import datetime
 
 @app.route('/')
 def home():
@@ -68,10 +69,6 @@ def newpub():
                 form.authors.append_entry()
                 form.authors[idx].first_name.data = fname 
                 form.authors[idx].last_name.data = lname
-    
-        print(form.authors)
-
-
 
     if 'doifind' not in request.form:
         if form.validate_on_submit():
@@ -84,12 +81,18 @@ def newpub():
             new_doc = Doc()
             db.session.add(new_doc)
             for author in form.authors.data:
-                print(author)
                 new_author = Author(**author)
 
                 #  add to doc database entry
                 new_doc.authors.append(new_author)
-            new_doc.title = form.title.data  
+            new_doc.title = form.title.data
+            new_doc.doi = form.doi.data.strip('https://doi.org/').strip('http://doi.org/')
+            new_doc.publisher = form.publisher.data 
+            new_doc.publication = form.publication.data
+            new_doc.publication_year = form.year.data 
+
+            new_doc.date_added = datetime.datetime.now()
+
             db.session.commit()  
 
             return redirect(url_for('success_new'))

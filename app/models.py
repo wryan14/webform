@@ -8,7 +8,12 @@ class Doc(db.Model):
     """Stores docs."""
     __tablename__ = 'docs'
     id = db.Column(db.Integer, primary_key=True)
+    date_added = db.Column(db.DateTime)
     title = db.Column(db.String(1000))
+    doi = db.Column(db.String(100))
+    publisher = db.Column(db.String(1000))
+    publication = db.Column(db.String(1000))
+    publication_year = db.Column(db.String(4))
 
 
 class Author(db.Model):
