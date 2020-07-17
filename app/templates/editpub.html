@@ -28,18 +28,79 @@
 							</div>
 						</div>
 
-						<!--Actual form-->
-						<form method="POST">
+						<form id="author-form" action="" method="POST" role="form">
 							<!--add hidden_tag for CRSF security-->
 							{{ form.hidden_tag() }}
 							<div class="form-group">
 								{{ wtf.form_field(form.title)}}
+								{{ wtf.form_field(form.doi)}}
+								{{ wtf.form_field(form.publication) }}
+								<a id="add" href="javascript:void();">Add Author</a>
 
-								{{ form.submit() }}
+								<script>
+									function() {
+										addForm();
+									};
+								</script>
+
+								<div class="border">
+									<div id="subforms-container">
+
+										{% for subform in form.authors %}
+										<div id="author-{{ loop.index0 }}-form" class="subform"
+											data-index="{{ loop.index0 }}">
+											<div class="row p-2">
+												<div class="col-4">
+													{{ wtf.form_field(subform.first_name) }}
+												</div>
+												<div class="col-6">
+													{{ wtf.form_field(subform.last_name) }}
+												</div>
+												<div class="col-2 align-self-center text-left">
+													<a class="remove" href="javascript:void();">Remove</a>
+												</div>
+											</div>
+
+
+										</div>
+										{% endfor %}
+									</div>
+								</div>
+
+
+								<div class="mt-1">{{ form.submit() }}</form>
+							
+							</form>
+								{% if form.errors %}
+								{{ form.errors }}
+								{% endif %}
+								
+						{# Form template #}
+
+						<div id="author-_-form" class="is-hidden" data-index="_">
+							<div class="row p-2">
+								<div class="col-4">
+									<label for="authors-_-first_name">First Name</label>
+									<input id="authors-_-first_name" name="authors-_-first_name" type="text" value=""
+										class="form-control">
+								</div>
+								<div class="col-6">
+									<label for="authors-_-last_name">Last Name</label>
+									<input id="authors-_-last_name" name="authors-_-last_name" type="text"
+										class="form-control">
+								</div>
+								<div class="col-2 align-self-center text-left">
+									<a class="remove" href="javascript:void();">Remove</a>
+								</div>
+							</div>
+						</div>
+
+						{# Show submitted data #}
+						{% if data is defined %}
+						<p>Received data: {{ data }}</p>
+						{% endif %}
 
 							</div>
-
-						</form>
 
 
 						<div class="col-1"></div>

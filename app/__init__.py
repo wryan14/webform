@@ -110,7 +110,12 @@ def update_display(rows, derived_virtual_selected_rows):
     selected_rows=[rows[i] for i in derived_virtual_selected_rows]
 
     try:
-        data = html.H3(selected_rows[0]['Title'])
+        # If the selected column is incorrect, select will stop working
+        data = html.Div([html.H3(selected_rows[0]['Title']),
+        html.H3(selected_rows[0]['Creator']),
+        html.H3(selected_rows[0]['Published in']),
+        html.H3(selected_rows[0]['DOI_Number'])
+        ])
     except IndexError:
         data = html.H3('Selected Data...')
 

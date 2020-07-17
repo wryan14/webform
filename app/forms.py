@@ -41,6 +41,8 @@ class UpdatePublication(FlaskForm):
     '''Creates form fields for update publication'''
 
     title = StringField("Title ")
+    doi = StringField("DOI ")
+    publication = StringField("Published in")
 
     authors = FieldList(
         FormField(AuthorForm),

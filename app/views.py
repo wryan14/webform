@@ -109,22 +109,36 @@ def newpub():
 @app.route('/edit', methods=['GET', 'POST'])
 def editpub():
     '''Renders new publication web-form'''
-    # load data using cdm_pull and search existing data
-    if 'cdmlookup' in request.form: # cdmlookup is the lookup form on editpub.html
-        query = request.form['cdmlookup']
-        df = cdm_pull('argument not yet needed')
-        filtered = df[df.apply(lambda row: row.astype(str).str.contains(query).any(), axis=1)]
-        
-        
     try:
-        title=json.loads(flask.session['data'])
-        title = title['Title']['0']
+        dash_data=json.loads(flask.session['data'])
+        title = dash_data['Title']['0']
+        doi = dash_data['DOI_Number']['0']
+        publication = dash_data['Published in']['0']
+        authors = dash_data['Creator']['0']
+
     except KeyError:
         title = None
+        doi = None
+        publication = None
+        authors = ''
     
-
     form = UpdatePublication()
     form.title.data = title
+    form.doi.data = doi
+    form.publication.data = publication
+
+    if authors != '':
+        for idx, auth_name in enumerate(authors.split(';')):
+            lname = auth_name.split(',')[0].strip()
+            fname = auth_name.split(',')[1].strip()
+
+            if idx == 0:
+                form.authors[idx].first_name.data = fname 
+                form.authors[idx].last_name.data = lname
+            else:
+                form.authors.append_entry()
+                form.authors[idx].first_name.data = fname 
+                form.authors[idx].last_name.data = lname
 
     if form.validate_on_submit():
 
@@ -132,7 +146,8 @@ def editpub():
         form.title.data = ''
         return redirect(url_for('success_edit'))
 
-    return render_template('editpub.html', form=form, title=title)
+    return render_template('editpub.html', form=form, title=title, 
+                                            doi=doi, publication=publication)
 
 
 @app.route('/update', methods=['GET', 'POST'])
