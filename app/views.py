@@ -1,5 +1,5 @@
 from app import app, dapp, db  
-from .models import Doc, Author
+from .models import Doc, Author, EditDoc, BeforeAuthor, EditAuthor
 from flask import render_template, redirect, url_for, session, request
 from .forms import NewPublication, UpdatePublication, UpdatePublicationStatus
 from .utility import CRef, cdm_pull
@@ -142,10 +142,34 @@ def editpub():
 
     if form.validate_on_submit():
 
-        title = form.title.data
-        form.title.data = ''
-        return redirect(url_for('success_edit'))
+        new_doc = EditDoc() 
+        db.session.add(new_doc) 
 
+        # Gather data from table first (before)
+        if authors != '':
+            for idx, auth_name in enumerate(authors.split(';')):
+                lname = auth_name.split(',')[0].strip()
+                fname = auth_name.split(',')[1].strip()
+                author_entry = {'first_name_before': fname, 'last_name_before': lname}
+                new_author = BeforeAuthor(**author_entry)
+                new_doc.before_authors.append(new_author)
+        new_doc.title_before = title 
+        new_doc.doi_before = doi 
+        new_doc.publication_before = publication 
+
+        new_doc.title_after = form.title.data  
+        new_doc.doi_after = form.doi.data  
+        new_doc.publication_after = form.publication.data    
+
+        for edit_author in form.authors.data:
+            new_edit_author = EditAuthor(**edit_author)
+            new_doc.edit_authors.append(new_edit_author)
+            
+        new_doc.date_added = datetime.datetime.now()
+        db.session.commit()
+
+        return redirect(url_for('success_edit'))
+    edit_docs = EditDoc.query
     return render_template('editpub.html', form=form, title=title, 
                                             doi=doi, publication=publication)
 
