@@ -89,7 +89,6 @@ def newpub():
             db.session.commit()  
             
             db_results = Doc.query.get(new_doc.id)
-            print(db_results)
             session['Title'] = db_results.title
             session['Doi'] = db_results.doi 
             
@@ -109,23 +108,33 @@ def newpub():
 @app.route('/edit', methods=['GET', 'POST'])
 def editpub():
     '''Renders new publication web-form'''
+
+    title = ''
+    doi = ''
+    publication = ''
+    authors = ''
+    lname = ''
+    fname = '' 
+
     try:
         dash_data=json.loads(flask.session['data'])
         title = dash_data['Title']['0']
         doi = dash_data['DOI_Number']['0']
         publication = dash_data['Published in']['0']
         authors = dash_data['Creator']['0']
-
+        flask.session.clear()
     except KeyError:
-        title = None
-        doi = None
-        publication = None
-        authors = ''
+        pass
+
     
     form = UpdatePublication()
-    form.title.data = title
-    form.doi.data = doi
-    form.publication.data = publication
+
+    if title!='':
+        form.title.data = title
+    if doi!='':
+        form.doi.data = doi 
+    if publication!='':
+        form.publication.data = publication
 
     if authors != '':
         for idx, auth_name in enumerate(authors.split(';')):
@@ -139,65 +148,34 @@ def editpub():
                 form.authors.append_entry()
                 form.authors[idx].first_name.data = fname 
                 form.authors[idx].last_name.data = lname
+    if 'doifind' not in request.form:
+        if form.validate_on_submit():
+            new_doc = EditDoc()
+            before_doc = BeforeDoc() 
+            db.session.add(new_doc)
 
-    if form.validate_on_submit():
+            for author in form.authors.data:
+                new_authors = EditAuthor(**author)  
+                # add to doc database entry 
+                new_doc.edit_authors.append(new_authors)
 
-        new_doc = EditDoc()
-        before_docs = BeforeDoc() 
-        db.session.add(new_doc)
+            new_doc.title = form.title.data 
+            new_doc.doi = form.doi.data.strip('https://doi.org/').strip('http://doi.org/')
+            new_doc.publication = form.publication.data   
+            new_doc.date_added = datetime.datetime.now() 
 
+            before_doc = BeforeDoc()
+            before_doc.title = "Old Title"
 
-        # Gather data from table first (before)
-        if authors != '':
-            for idx, auth_name in enumerate(authors.split(';')):
-                lname = auth_name.split(',')[0].strip()
-                fname = auth_name.split(',')[1].strip()
-                author_entry = {'first_name': fname, 'last_name': lname}
-                new_author = BeforeAuthor(**author_entry)
-                before_docs.before_authors.append(new_author)
-        before_docs.title = title
-        before_docs.doi = doi 
-        before_docs.publication = publication  
+            new_doc.before_docs.append(before_doc)
 
-        new_doc.title = form.title.data 
-        new_doc.doi = form.doi.data 
-        new_doc.publication = form.publication.data 
-        print(form.title.data)
-      
-        for edit_author in form.authors.data:
-            new_edit_author = EditAuthor(**edit_author)
-            new_doc.edit_authors.append(new_edit_author)
-        
-        new_doc.before_docs.append(before_docs)
-        new_doc.date_added = datetime.datetime.now()
-        
-        db.session.commit()
+            db.session.commit()
 
-        # query data and add to session for success page
-        db_results = EditDoc.query.get(new_doc.id)
-        print(db_results)
-        session['Title-Before'] = db_results.title
-        session['Title-After'] = db_results.title
-        session['Doi-Before'] = db_results.doi
-        session['Doi-After'] = db_results.doi
-        session['Publication-Before'] = db_results.publication
-        session['Publication-After'] = db_results.publication 
-
-        authors_before = EditAuthor.query.filter_by(doc_id=new_doc.id) 
-        author_before_list = [(x.first_name, x.last_name) for x in authors_before.all() ]
-
-        authors_after = EditAuthor.query.filter_by(doc_id=new_doc.id) 
-        author_after_list = [(x.first_name, x.last_name) for x in authors_after.all()]
-
-        session['Author_list_before'] = author_before_list  
-        session['Author_list_after'] = author_after_list  
-
-
-        
-        return redirect(url_for('success_edit'))
+            return redirect(url_for('success_edit'))
     edit_docs = EditDoc.query
-    return render_template('editpub.html', form=form, title=title, 
-                                            doi=doi, publication=publication)
+    return render_template('editpub.html', form=form)
+
+    
 
 
 @app.route('/update', methods=['GET', 'POST'])
@@ -210,6 +188,7 @@ def updatepub():
     if form.validate_on_submit():
 
         title = form.title.data
+        print(title)
         form.title.data = ''
         return redirect(url_for('success_update'))
 

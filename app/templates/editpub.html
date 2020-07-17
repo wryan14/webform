@@ -21,8 +21,7 @@
 								<div class="col">
 									<a href="{{url_for('dash_app')}}"
 										class="btn btn-dark btn-lg justify-content-center btn-block mt-2"
-										role="button">Select
-										Record</a>
+										role="button">Select Record</a>
 								</div>
 								<div class="col"></div>
 							</div>
@@ -60,21 +59,18 @@
 													<a class="remove" href="javascript:void();">Remove</a>
 												</div>
 											</div>
-
-
 										</div>
 										{% endfor %}
 									</div>
 								</div>
-
-
-								<div class="mt-1">{{ form.submit() }}</form>
-							
-							</form>
-								{% if form.errors %}
-								{{ form.errors }}
-								{% endif %}
+									{{ form.submit() }}
 								
+							</div>
+						</form>
+						{% if form.errors %}
+						{{ form.errors }}
+						{% endif %}
+
 						{# Form template #}
 
 						<div id="author-_-form" class="is-hidden" data-index="_">
@@ -94,34 +90,20 @@
 								</div>
 							</div>
 						</div>
-
 						{# Show submitted data #}
 						{% if data is defined %}
 						<p>Received data: {{ data }}</p>
 						{% endif %}
-
-							</div>
-
-
-						<div class="col-1"></div>
-
-
-
-
 					</div>
-					<div class="row">
-
-					</div>
-
-
+					<div class="col-1"></div>
+				</div>
+				<div class="row">
 				</div>
 			</div>
-
-			<div class="col-1"></div>
-
 		</div>
-
+		<div class="col-1"></div>
 	</div>
 </div>
+</div>
 
-	{% endblock %}
+{% endblock %}
