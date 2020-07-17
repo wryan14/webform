@@ -111,13 +111,24 @@ def update_display(rows, derived_virtual_selected_rows):
 
     try:
         # If the selected column is incorrect, select will stop working
-        data = html.Div([html.H3(selected_rows[0]['Title']),
-        html.H3(selected_rows[0]['Creator']),
-        html.H3(selected_rows[0]['Published in']),
-        html.H3(selected_rows[0]['DOI_Number'])
-        ])
+        data = html.Div([html.H3('Selected Data', className="mb-3 ml-1"), html.Table(
+            [
+                html.Tr([html.Th('Title', className="col-2"), html.Td(selected_rows[0]['Title'], className="col-6")], className="d-flex"),
+                html.Tr([html.Th('Creators', className="col-2"), html.Td(selected_rows[0]['Creator'], className="col-6")], className="d-flex"),
+                html.Tr([html.Th('Published in', className="col-2"), html.Td(selected_rows[0]['Published in'], className="col-6")], className="d-flex"),
+                html.Tr([html.Th('DOI_Number', className="col-2"), html.Td(selected_rows[0]['DOI_Number'], className="col-6")], className="d-flex")
+            ], className="table"
+        )])
+
     except IndexError:
-        data = html.H3('Selected Data...')
+        data = html.Div([html.H3('Selected Data', className="mb-3 ml-1"), html.Table(
+            [
+                html.Tr([html.Th('Title', className="col-2"), html.Td('', className="col-6"), html.Td('', className="col-4 border-0")], className="d-flex"),
+                html.Tr([html.Th('Creators', className="col-2"), html.Td('', className="col-6")], className="d-flex"),
+                html.Tr([html.Th('Published in', className="col-2"), html.Td('', className="col-6")], className="d-flex"),
+                html.Tr([html.Th('DOI_Number', className="col-2"), html.Td('', className="col-6")], className="d-flex")
+            ], className="table"
+        )])
 
     flask.session['data'] = pd.DataFrame(selected_rows).to_json()
 
