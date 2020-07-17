@@ -165,7 +165,7 @@ def editpub():
             new_doc.date_added = datetime.datetime.now() 
 
             before_doc = BeforeDoc()
-            before_doc.title = "Old Title"
+            before_doc.title = "Old Title" # how to keep the session data as a variable?
 
             new_doc.before_docs.append(before_doc)
 
