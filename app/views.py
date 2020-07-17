@@ -1,5 +1,5 @@
 from app import app, dapp, db  
-from .models import Doc, Author, EditDoc, BeforeAuthor, EditAuthor
+from .models import Doc, Author, EditDoc, BeforeDoc, BeforeAuthor, EditAuthor
 from flask import render_template, redirect, url_for, session, request
 from .forms import NewPublication, UpdatePublication, UpdatePublicationStatus
 from .utility import CRef, cdm_pull
@@ -142,44 +142,49 @@ def editpub():
 
     if form.validate_on_submit():
 
-        new_doc = EditDoc() 
-        db.session.add(new_doc) 
+        new_doc = EditDoc()
+        before_docs = BeforeDoc() 
+        db.session.add(new_doc)
+
 
         # Gather data from table first (before)
         if authors != '':
             for idx, auth_name in enumerate(authors.split(';')):
                 lname = auth_name.split(',')[0].strip()
                 fname = auth_name.split(',')[1].strip()
-                author_entry = {'first_name_before': fname, 'last_name_before': lname}
+                author_entry = {'first_name': fname, 'last_name': lname}
                 new_author = BeforeAuthor(**author_entry)
-                new_doc.before_authors.append(new_author)
-        new_doc.title_before = title 
-        new_doc.doi_before = doi 
-        new_doc.publication_before = publication 
+                before_docs.before_authors.append(new_author)
+        before_docs.title = title
+        before_docs.doi = doi 
+        before_docs.publication = publication  
 
-        new_doc.title_after = form.title.data  
-        new_doc.doi_after = form.doi.data  
-        new_doc.publication_after = form.publication.data    
-
+        new_doc.title = form.title.data 
+        new_doc.doi = form.doi.data 
+        new_doc.publication = form.publication.data 
+        print(form.title.data)
+      
         for edit_author in form.authors.data:
             new_edit_author = EditAuthor(**edit_author)
             new_doc.edit_authors.append(new_edit_author)
-            
+        
+        new_doc.before_docs.append(before_docs)
         new_doc.date_added = datetime.datetime.now()
+        
         db.session.commit()
 
         # query data and add to session for success page
         db_results = EditDoc.query.get(new_doc.id)
         print(db_results)
-        session['Title-Before'] = db_results.title_before 
-        session['Title-After'] = db_results.title_after 
-        session['Doi-Before'] = db_results.doi_before 
-        session['Doi-After'] = db_results.doi_after 
-        session['Publication-Before'] = db_results.publication_before 
-        session['Publication-After'] = db_results.publication_after  
+        session['Title-Before'] = db_results.title
+        session['Title-After'] = db_results.title
+        session['Doi-Before'] = db_results.doi
+        session['Doi-After'] = db_results.doi
+        session['Publication-Before'] = db_results.publication
+        session['Publication-After'] = db_results.publication 
 
-        authors_before = BeforeAuthor.query.filter_by(doc_id=new_doc.id) 
-        author_before_list = [(x.first_name_before, x.last_name_before) for x in authors_before.all() ]
+        authors_before = EditAuthor.query.filter_by(doc_id=new_doc.id) 
+        author_before_list = [(x.first_name, x.last_name) for x in authors_before.all() ]
 
         authors_after = EditAuthor.query.filter_by(doc_id=new_doc.id) 
         author_after_list = [(x.first_name, x.last_name) for x in authors_after.all()]
