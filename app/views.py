@@ -117,11 +117,18 @@ def editpub():
     fname = '' 
 
     try:
+        new_doc = EditDoc()
+        before_doc = BeforeDoc() 
+        db.session.add(new_doc)
         dash_data=json.loads(flask.session['data'])
         title = dash_data['Title']['0']
         doi = dash_data['DOI_Number']['0']
         publication = dash_data['Published in']['0']
         authors = dash_data['Creator']['0']
+        before_doc.title = title 
+        before_doc.publication = publication
+        new_doc.before_docs.append(before_doc)
+        db.session.commit()
         flask.session.clear()
     except KeyError:
         pass
@@ -150,9 +157,8 @@ def editpub():
                 form.authors[idx].last_name.data = lname
     if 'doifind' not in request.form:
         if form.validate_on_submit():
-            new_doc = EditDoc()
-            before_doc = BeforeDoc() 
-            db.session.add(new_doc)
+            new_doc = db.session.query(EditDoc).order_by(EditDoc.id.desc()).first()
+            new_doc = new_doc.query.get(new_doc.id-1) # may not be the best way, but this edits the last created record
 
             for author in form.authors.data:
                 new_authors = EditAuthor(**author)  
@@ -163,11 +169,6 @@ def editpub():
             new_doc.doi = form.doi.data.strip('https://doi.org/').strip('http://doi.org/')
             new_doc.publication = form.publication.data   
             new_doc.date_added = datetime.datetime.now() 
-
-            before_doc = BeforeDoc()
-            before_doc.title = "Old Title" # how to keep the session data as a variable?
-
-            new_doc.before_docs.append(before_doc)
 
             db.session.commit()
 
