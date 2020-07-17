@@ -168,6 +168,27 @@ def editpub():
         new_doc.date_added = datetime.datetime.now()
         db.session.commit()
 
+        # query data and add to session for success page
+        db_results = EditDoc.query.get(new_doc.id)
+        print(db_results)
+        session['Title-Before'] = db_results.title_before 
+        session['Title-After'] = db_results.title_after 
+        session['Doi-Before'] = db_results.doi_before 
+        session['Doi-After'] = db_results.doi_after 
+        session['Publication-Before'] = db_results.publication_before 
+        session['Publication-After'] = db_results.publication_after  
+
+        authors_before = BeforeAuthor.query.filter_by(doc_id=new_doc.id) 
+        author_before_list = [(x.first_name_before, x.last_name_before) for x in authors_before.all() ]
+
+        authors_after = EditAuthor.query.filter_by(doc_id=new_doc.id) 
+        author_after_list = [(x.first_name, x.last_name) for x in authors_after.all()]
+
+        session['Author_list_before'] = author_before_list  
+        session['Author_list_after'] = author_after_list  
+
+
+        
         return redirect(url_for('success_edit'))
     edit_docs = EditDoc.query
     return render_template('editpub.html', form=form, title=title, 

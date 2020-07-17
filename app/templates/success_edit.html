@@ -2,7 +2,57 @@
 
 {% block content %}
 
-<h3>Success!</h3>
-<p>Thanks for submitting your info.</p>
+<div class="container">
+    <h1 class="mt-2 display-4">Success...</h1>
+    <p>Thank you for editing your publication!</p>
+    <div class="jumbotron p-4 border bg-white">
+
+        <table class="table m-5 p-5 d-flex" id="borderless">
+            <tbody>
+                <tr>
+                    <th></th>
+                    <th>Original</th>
+                    <th>Edit</th>
+                </tr>
+                {% if session['Title-Before']!=session['Title-After'] %}
+                <tr>
+                    <th><strong>Title</strong></th>
+                    <td>{{ session['Title-Before'] }}</td>
+                    <td>{{ session['Title-After'] }}</td>
+                </tr>
+                {% endif %}
+                {% if session['Author_list_before']!=session['Author_list_after'] %}
+                <tr>
+                    <td class="border-0"><strong>Authors</strong></td>
+                    <td class="border-0">
+                        {% for tup in session['Author_list_before'] %}
+                        {{tup[0]}} {{tup[1]}}<br>
+                        {% endfor %}
+                    </td>
+                    <td class="border-0">
+                        {% for tup in session['Author_list_after'] %}
+                        {{tup[0]}} {{tup[1]}}<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endif %}
+                {% if session['Doi-Before'] != session['Doi-After'] %}
+                <tr>
+                    <td class="border-0"><strong>Doi</strong></td>
+                    <td class="border-0">{{session['DOI-Before']}}</td>
+                    <td class="border-0">{{ session['Doi-After'] }}</td>
+                </tr>
+                {% endif %}
+                {% if session['Publication-Before']!=session['Publication-After'] %}
+                <tr>
+                    <td class="border-0"><strong>Publication</strong></td>
+                    <td class="border-0">{{ session['Publication-Before'] }}</td>
+                    <td class="border-0">{{ session['Publication-After'] }}</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 {% endblock %}
