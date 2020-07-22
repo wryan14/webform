@@ -131,7 +131,8 @@ def editpub():
         before_doc.publication = publication
         before_doc.doi = doi
         new_doc.before_docs.append(before_doc)
-        db.session.commit()
+        db.session.commit()  # This could potentially end up storing too much data in the database
+        # Is the solution to develop a script that periodically deletes null values from the SQLite database?
         flask.session.clear()
     except KeyError:
         pass
@@ -163,6 +164,7 @@ def editpub():
             new_doc = db.session.query(EditDoc).order_by(EditDoc.id.desc()).first()
             new_doc = new_doc.query.get(new_doc.id-1) # may not be the best way, but this edits the last created record
 
+
             for author in form.authors.data:
                 new_authors = EditAuthor(**author)  
                 # add to doc database entry 
@@ -174,20 +176,22 @@ def editpub():
             new_doc.date_added = datetime.datetime.now() 
 
             db.session.commit()
-
+            
             # store data for success page from database     
             sql = text('''
                 SELECT edit_docs.id, before_docs.title, edit_docs.title, 
                 before_docs.doi, edit_docs.doi, 
                 before_docs.publication, edit_docs.publication
                 FROM before_docs 
-                INNER JOIN edit_docs ON before_docs.doc_id=edit_docs.id
+                INNER JOIN edit_docs ON before_docs.doc_id=edit_docs.id;
             ''')
             results= db.engine.execute(sql)
             data = [row for row in results]
             columns = ['Id', 'Title-Before', 'Title-After', 'DOI-Before', 'DOI-After', 'Publication-Before', 'Publication-After']
 
             df = pd.DataFrame(columns=columns, data=data)
+
+
             df = df[df['Id']==new_doc.id]
             
             # assign session values
