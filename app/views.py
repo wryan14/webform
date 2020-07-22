@@ -3,9 +3,11 @@ from .models import Doc, Author, EditDoc, BeforeDoc, BeforeAuthor, EditAuthor
 from flask import render_template, redirect, url_for, session, request
 from .forms import NewPublication, UpdatePublication, UpdatePublicationStatus
 from .utility import CRef, cdm_pull
+from sqlalchemy import text 
 import flask
 import json
 import datetime
+import pandas as pd 
 
 @app.route('/')
 def home():
@@ -127,6 +129,7 @@ def editpub():
         authors = dash_data['Creator']['0']
         before_doc.title = title 
         before_doc.publication = publication
+        before_doc.doi = doi
         new_doc.before_docs.append(before_doc)
         db.session.commit()
         flask.session.clear()
@@ -171,6 +174,56 @@ def editpub():
             new_doc.date_added = datetime.datetime.now() 
 
             db.session.commit()
+
+            # store data for success page from database     
+            sql = text('''
+                SELECT edit_docs.id, before_docs.title, edit_docs.title, 
+                before_docs.doi, edit_docs.doi, 
+                before_docs.publication, edit_docs.publication
+                FROM before_docs 
+                INNER JOIN edit_docs ON before_docs.doc_id=edit_docs.id
+            ''')
+            results= db.engine.execute(sql)
+            data = [row for row in results]
+            columns = ['Id', 'Title-Before', 'Title-After', 'DOI-Before', 'DOI-After', 'Publication-Before', 'Publication-After']
+
+            df = pd.DataFrame(columns=columns, data=data)
+            df = df[df['Id']==new_doc.id]
+            
+            # assign session values
+            for idx, row in df.iterrows():
+                if row['Title-Before']!=row['Title-After']:
+                    session['Title-Before'] = row['Title-Before']
+                    session['Title-After'] = row['Title-After']
+                else:
+                    session['Title-Before'] = None  
+                    session['Title-After'] = None
+                if row['DOI-Before'] != row['DOI-After']:
+                    session['DOI-Before'] = row['DOI-Before']
+                    session['DOI-After'] = row['DOI-After']
+                else:
+                    session['DOI-Before'] = None  
+                    session['DOI-After'] = None 
+                if row['Publication-Before'] != row['Publication-After']:
+                    session['Publication-Before'] = row['Publication-Before']
+                    session['Publication-After'] = row['Publication-After']
+                else:
+                    session['Publication-Before'] = None 
+                    session['Publication-After'] = None
+
+
+
+
+
+  
+           
+            
+
+            # session['Title-Before'] = 
+            # session['Title-After'] = db_results.title
+            # session['Doi'] = db_results.doi 
+
+
 
             return redirect(url_for('success_edit'))
     edit_docs = EditDoc.query

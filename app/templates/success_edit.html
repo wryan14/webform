@@ -3,10 +3,16 @@
 {% block content %}
 
 <div class="container">
-    <h1 class="mt-2 display-4">Success...</h1>
-    <p>Thank you for editing your publication!</p>
-    <div class="jumbotron p-4 border bg-white">
 
+    <div class="jumbotron p-4 m-4 border bg-white">
+        <div class="row">
+            <div class="col-6">
+        <h4 class="mt-2">Success...</h4>
+        <small>Thank you for submitting your edits! Changes are now under review.</small>
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+        </div>
         <table class="table m-5 p-5 d-flex" id="borderless">
             <tbody>
                 <tr>
@@ -14,7 +20,7 @@
                     <th>Original</th>
                     <th>Edit</th>
                 </tr>
-                {% if session['Title-Before']!=session['Title-After'] %}
+                {% if session['Title-After'] is not none %}
                 <tr>
                     <th><strong>Title</strong></th>
                     <td>{{ session['Title-Before'] }}</td>
@@ -36,14 +42,14 @@
                     </td>
                 </tr>
                 {% endif %}
-                {% if session['Doi-Before'] != session['Doi-After'] %}
+                {% if session['DOI-After'] is not none %}
                 <tr>
                     <td class="border-0"><strong>Doi</strong></td>
                     <td class="border-0">{{session['DOI-Before']}}</td>
-                    <td class="border-0">{{ session['Doi-After'] }}</td>
+                    <td class="border-0">{{ session['DOI-After'] }}</td>
                 </tr>
                 {% endif %}
-                {% if session['Publication-Before']!=session['Publication-After'] %}
+                {% if session['Publication-After'] is not none %}
                 <tr>
                     <td class="border-0"><strong>Publication</strong></td>
                     <td class="border-0">{{ session['Publication-Before'] }}</td>
