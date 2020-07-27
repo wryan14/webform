@@ -127,6 +127,16 @@ def editpub():
         doi = dash_data['DOI_Number']['0']
         publication = dash_data['Published in']['0']
         authors = dash_data['Creator']['0']
+
+        # append authors to database 
+        if authors != '':
+            for idx, auth_name in enumerate(authors.split(';')):
+                lname = auth_name.split(',')[0].strip() 
+                fname = auth_name.split(',')[1].strip() 
+            
+                before_author = BeforeAuthor(first_name=fname, last_name=lname)
+                before_doc.before_authors.append(before_author)
+        
         before_doc.title = title 
         before_doc.publication = publication
         before_doc.doi = doi
@@ -214,6 +224,46 @@ def editpub():
                 else:
                     session['Publication-Before'] = None 
                     session['Publication-After'] = None
+
+            # find the edit_doc id, so we can correctly combine before authors
+            find_before_doc_id = text('''
+                SELECT id FROM before_docs
+                WHERE doc_id={};
+            '''.format(new_doc.id))
+
+            find_before_results = db.engine.execute(find_before_doc_id)
+            find_before_id = [row for row in find_before_results][0][0]
+
+
+            # find authors
+            edit_author_sql = text('''
+                SELECT * FROM edit_authors
+                WHERE doc_id={};
+            '''.format(new_doc.id))
+
+            before_author_sql = text('''
+                SELECT * FROM before_authors
+                WHERE doc_id={};
+            '''.format(find_before_id))
+
+
+            edit_author_results = db.engine.execute(edit_author_sql) 
+            before_author_results = db.engine.execute(before_author_sql)
+
+            
+            # author data
+            edit_author_data = [row for row in edit_author_results]
+            before_author_data = [row for row in before_author_results]
+
+            columns = ['Id', 'DocId', 'FirstName', 'LastName']
+
+            edit_author_df = pd.DataFrame(columns=columns, data=edit_author_data)
+            before_author_df = pd.DataFrame(columns=columns, data=before_author_data) 
+
+            print(edit_author_df)
+            print(before_author_df)
+            
+            
 
 
 
