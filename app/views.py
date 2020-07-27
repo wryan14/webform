@@ -279,8 +279,6 @@ def editpub():
     edit_docs = EditDoc.query
     return render_template('editpub.html', form=form)
 
-    
-
 
 @app.route('/update', methods=['GET', 'POST'])
 def updatepub():
@@ -297,6 +295,19 @@ def updatepub():
         return redirect(url_for('success_update'))
 
     return render_template('updatepub.html', form=form, title=title)
+
+
+@app.route('/clear_table', methods=['GET', 'POST'])
+def cleartable():
+    '''Clears null values from the edit_docs database; not intended for public use'''
+    remove_null= text('''
+        DELETE from edit_docs
+        WHERE title is null;
+        ''')
+
+    db.engine.execute(remove_null)
+    return redirect(url_for('home'))
+
 
 
 @app.route('/success_new')
