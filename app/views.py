@@ -260,23 +260,19 @@ def editpub():
             edit_author_df = pd.DataFrame(columns=columns, data=edit_author_data)
             before_author_df = pd.DataFrame(columns=columns, data=before_author_data) 
 
-            print(edit_author_df)
-            print(before_author_df)
-            
-            
+            edit_author_list = list(zip(edit_author_df['FirstName'].tolist(), edit_author_df['LastName'].tolist()))
+            before_author_list = list(zip(before_author_df['FirstName'].tolist(), before_author_df['LastName'].tolist()))
 
+            # turn list of tuples into list of strings 
+            edit_author_list = ['{} {}'.format(x[0], x[1]) for x in edit_author_list]
+            before_author_list = ['{} {}'.format(x[0], x[1]) for x in before_author_list]
 
-
-
-
-  
-           
-            
-
-            # session['Title-Before'] = 
-            # session['Title-After'] = db_results.title
-            # session['Doi'] = db_results.doi 
-
+            if edit_author_list != before_author_list:
+                session['Author-Before'] = before_author_list 
+                session['Author-After'] = edit_author_list 
+            else:
+                session['Author-Before'] = None 
+                session['Author-After'] = None
 
 
             return redirect(url_for('success_edit'))

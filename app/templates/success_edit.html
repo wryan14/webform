@@ -27,17 +27,17 @@
                     <td>{{ session['Title-After'] }}</td>
                 </tr>
                 {% endif %}
-                {% if session['Author_list_before']!=session['Author_list_after'] %}
+                {% if session['Author-After'] is not none %}
                 <tr>
                     <td class="border-0"><strong>Authors</strong></td>
                     <td class="border-0">
-                        {% for tup in session['Author_list_before'] %}
-                        {{tup[0]}} {{tup[1]}}<br>
+                        {% for name in session['Author-Before'] %}
+                        {{name}}<br>
                         {% endfor %}
                     </td>
                     <td class="border-0">
-                        {% for tup in session['Author_list_after'] %}
-                        {{tup[0]}} {{tup[1]}}<br>
+                        {% for name in session['Author-After'] %}
+                        {{name}}<br>
                         {% endfor %}
                     </td>
                 </tr>
