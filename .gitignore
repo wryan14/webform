@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 vi.swp
-.views.py.swp
+*.swp
 *.db
 *.sqlite
 data.sqlite
