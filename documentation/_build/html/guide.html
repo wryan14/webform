@@ -166,6 +166,119 @@
 <li><p><a class="reference internal" href="#programmer-s-guide" id="id1">Programmer’s Guide</a></p></li>
 </ul>
 </div>
+<span class="target" id="module-app.app"></span><p>The flask object implements a WSGI application and acts as the central
+object.  It is passed the name of the module or package of the
+application.  Once it is created it will act as a central registry for
+the view functions, the URL rules, template configuration and much more.</p>
+<p>The name of the package is used to resolve resources from inside the
+package or the folder the module is contained in depending on if the
+package parameter resolves to an actual python package (a folder with
+an <code class="file docutils literal notranslate"><span class="pre">__init__.py</span></code> file inside) or a standard module (just a <code class="docutils literal notranslate"><span class="pre">.py</span></code> file).</p>
+<p>For more information about resource loading, see <code class="xref py py-func docutils literal notranslate"><span class="pre">open_resource()</span></code>.</p>
+<p>Usually you create a <code class="xref py py-class docutils literal notranslate"><span class="pre">Flask</span></code> instance in your main module or
+in the <code class="file docutils literal notranslate"><span class="pre">__init__.py</span></code> file of your package like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-about-the-first-parameter admonition">
+<p class="admonition-title">About the First Parameter</p>
+<p>The idea of the first parameter is to give Flask an idea of what
+belongs to your application.  This name is used to find resources
+on the filesystem, can be used by extensions to improve debugging
+information and a lot more.</p>
+<p>So it’s important what you provide there.  If you are using a single
+module, <cite>__name__</cite> is always the correct value.  If you however are
+using a package, it’s usually recommended to hardcode the name of
+your package there.</p>
+<p>For example if your application is defined in <code class="file docutils literal notranslate"><span class="pre">yourapplication/app.py</span></code>
+you should create it with one of the two versions below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="s1">&#39;yourapplication&#39;</span><span class="p">)</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Why is that?  The application will work even with <cite>__name__</cite>, thanks
+to how resources are looked up.  However it will make debugging more
+painful.  Certain extensions can make assumptions based on the
+import name of your application.  For example the Flask-SQLAlchemy
+extension will look for the code in your application that triggered
+an SQL query in debug mode.  If the import name is not properly set
+up, that debugging information is lost.  (For example it would only
+pick up SQL queries in <cite>yourapplication.app</cite> and not
+<cite>yourapplication.views.frontend</cite>)</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.7: </span>The <cite>static_url_path</cite>, <cite>static_folder</cite>, and <cite>template_folder</cite>
+parameters were added.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.8: </span>The <cite>instance_path</cite> and <cite>instance_relative_config</cite> parameters were
+added.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.11: </span>The <cite>root_path</cite> parameter was added.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.0: </span>The <code class="docutils literal notranslate"><span class="pre">host_matching</span></code> and <code class="docutils literal notranslate"><span class="pre">static_host</span></code> parameters were added.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.0: </span>The <code class="docutils literal notranslate"><span class="pre">subdomain_matching</span></code> parameter was added. Subdomain
+matching needs to be enabled manually now. Setting
+<code class="xref py py-data docutils literal notranslate"><span class="pre">SERVER_NAME</span></code> does not implicitly enable it.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">param import_name</dt>
+<dd class="field-odd"><p>the name of the application package</p>
+</dd>
+<dt class="field-even">param static_url_path</dt>
+<dd class="field-even"><p>can be used to specify a different path for the
+static files on the web.  Defaults to the name
+of the <cite>static_folder</cite> folder.</p>
+</dd>
+<dt class="field-odd">param static_folder</dt>
+<dd class="field-odd"><p>The folder with static files that is served at
+<code class="docutils literal notranslate"><span class="pre">static_url_path</span></code>. Relative to the application <code class="docutils literal notranslate"><span class="pre">root_path</span></code>
+or an absolute path. Defaults to <code class="docutils literal notranslate"><span class="pre">'static'</span></code>.</p>
+</dd>
+<dt class="field-even">param static_host</dt>
+<dd class="field-even"><p>the host to use when adding the static route.
+Defaults to None. Required when using <code class="docutils literal notranslate"><span class="pre">host_matching=True</span></code>
+with a <code class="docutils literal notranslate"><span class="pre">static_folder</span></code> configured.</p>
+</dd>
+<dt class="field-odd">param host_matching</dt>
+<dd class="field-odd"><p>set <code class="docutils literal notranslate"><span class="pre">url_map.host_matching</span></code> attribute.
+Defaults to False.</p>
+</dd>
+<dt class="field-even">param subdomain_matching</dt>
+<dd class="field-even"><p>consider the subdomain relative to
+<code class="xref py py-data docutils literal notranslate"><span class="pre">SERVER_NAME</span></code> when matching routes. Defaults to False.</p>
+</dd>
+<dt class="field-odd">param template_folder</dt>
+<dd class="field-odd"><p>the folder that contains the templates that should
+be used by the application.  Defaults to
+<code class="docutils literal notranslate"><span class="pre">'templates'</span></code> folder in the root path of the
+application.</p>
+</dd>
+<dt class="field-even">param instance_path</dt>
+<dd class="field-even"><p>An alternative instance path for the application.
+By default the folder <code class="docutils literal notranslate"><span class="pre">'instance'</span></code> next to the
+package or module is assumed to be the instance
+path.</p>
+</dd>
+<dt class="field-odd">param instance_relative_config</dt>
+<dd class="field-odd"><p>if set to <code class="docutils literal notranslate"><span class="pre">True</span></code> relative filenames
+for loading the config are assumed to
+be relative to the instance path instead
+of the application root.</p>
+</dd>
+<dt class="field-even">param root_path</dt>
+<dd class="field-even"><p>Flask by default will automatically calculate the path
+to the root of the application.  In certain situations
+this cannot be achieved (for instance if the package
+is a Python 3 namespace package) and needs to be
+manually defined.</p>
+</dd>
+</dl>
 </div>
 
 
