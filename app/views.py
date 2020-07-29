@@ -19,7 +19,7 @@ def home():
     functionality.
 
     Returns:
-        ./templates/welcome_page.html
+        * ./templates/welcome_page.html
     """
     return render_template('welcome_page.html')
 
@@ -30,8 +30,8 @@ def newpub():
     and save form to Doc database table. 
 
     Returns:
-        ./templates/newpub.html
-        ./templates/success_new.html (upon submit)
+        * ./templates/newpub.html
+        * ./templates/success_new.html (upon submit)
     """
     # initial variables should exist, but contain an empty string
     title = ''
@@ -130,8 +130,8 @@ def editpub():
         Any changes submitted to this view are then stored in the EditDoc model. 
 
         Returns:
-            ./templates/editpub.html
-            ./templates/success_edit.html (upon submit)
+            * ./templates/editpub.html
+            * ./templates/success_edit.html (upon submit)
     """
 
     # initial variables should contain empty string
@@ -314,8 +314,8 @@ def updatepub():
     """Renders the forthcoming process.
 
     Returns:
-        ./templates/updatepub.html
-        ./templates/success_update.html (upon submit)
+        * ./templates/updatepub.html
+        * ./templates/success_update.html (upon submit)
 
     View still in progress
     """
@@ -339,7 +339,7 @@ def cleartable():
         some cleanup. 
 
         Returns:
-            ./templates/welcome_page.html
+            * ./templates/welcome_page.html
     """
     remove_null = text('''
         DELETE from edit_docs
@@ -378,3 +378,9 @@ def dash_app():
         return render_template('editpub')
 
     return dapp.index()
+
+@app.route('/documentation/<dir>/<filename>', defaults={'static': True})
+def doc(dir='',filename='index.html'):
+    path = join(dir,filename)
+    return app.send_static_file(path)
+    

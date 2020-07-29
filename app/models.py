@@ -85,7 +85,7 @@ class BeforeDoc(db.Model):
     :type doi: str 
     :param publication: Entitiy publishing document object prior to edits
     :type publication: str 
-    :edit_doc: Establishes backref connection to EditDoc model
+    :param edit_doc: Establishes backref connection to EditDoc model
     """
     __tablename__ = 'before_docs'
     id = db.Column(db.Integer, primary_key=True)

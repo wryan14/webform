@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>app.models &mdash; Economist Webforms 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Economist Webforms
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide.html">Programmer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Economist Webforms</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>app.models</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for app.models</h1><div class="highlight"><pre>
+<span></span><span class="c1"># models.py</span>
+<span class="c1"># This document contains all of the models required to store data in a SQLite database.</span>
+<span class="c1"># Dynamic author fields heavily borrows from https://www.rmedgar.com/blog/dynamic-fields-flask-wtf</span>
+
+<span class="kn">from</span> <span class="nn">flask_sqlalchemy</span> <span class="kn">import</span> <span class="n">SQLAlchemy</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">()</span>  <span class="c1"># start database</span>
+
+<span class="c1">########################</span>
+<span class="c1"># New Pubs Model</span>
+<span class="c1">########################</span>
+
+
+<div class="viewcode-block" id="Doc"><a class="viewcode-back" href="../../guide.html#app.models.Doc">[docs]</a><span class="k">class</span> <span class="nc">Doc</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model associated with adding a new publication.</span>
+
+<span class="sd">    :param id: primary key (auto-generated)</span>
+<span class="sd">    :type id: int </span>
+<span class="sd">    :param date_added: date document added to database (useful for queries; auto-generated)</span>
+<span class="sd">    :type date_added: datetime</span>
+<span class="sd">    :param title: title of new document </span>
+<span class="sd">    :type title: str</span>
+<span class="sd">    :param doi: Digitial Object Identifier (DOI), should not contain https://doi.org/</span>
+<span class="sd">    :type doi: str</span>
+<span class="sd">    :param publisher: Name of entity publishing new object</span>
+<span class="sd">    :type publisher: str </span>
+<span class="sd">    :param publication: Name of entity in which object is published</span>
+<span class="sd">    :type publication: str</span>
+<span class="sd">    :param publication_year: Year entity published (different from date_added)</span>
+<span class="sd">    :type publication_year: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;docs&#39;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">date_added</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+    <span class="n">doi</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+    <span class="n">publisher</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+    <span class="n">publication</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+    <span class="n">publication_year</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Author"><a class="viewcode-back" href="../../guide.html#app.models.Author">[docs]</a><span class="k">class</span> <span class="nc">Author</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Author information associated with Doc model and adding new publication.</span>
+
+<span class="sd">    :param id: primary key (auto-generated)</span>
+<span class="sd">    :type id: int</span>
+<span class="sd">    :param doc_id: foreign key from Doc model (Doc.id)</span>
+<span class="sd">    :type doc_id: int</span>
+<span class="sd">    :param first_name: First name of author associated with Doc.id publication</span>
+<span class="sd">    :type first_name: str</span>
+<span class="sd">    :param last_name: Last name of author associated with Doc.id publication</span>
+<span class="sd">    :type last_name: str</span>
+<span class="sd">    :param doc: Establishes backref connection to Doc model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;authors&#39;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">doc_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;docs.id&#39;</span><span class="p">))</span>
+
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">300</span><span class="p">))</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">500</span><span class="p">))</span>
+
+    <span class="c1"># Relationship</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s1">&#39;Doc&#39;</span><span class="p">,</span>
+        <span class="n">backref</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;authors&#39;</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="s1">&#39;dynamic&#39;</span><span class="p">,</span> <span class="n">collection_class</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+<span class="c1">########################</span>
+<span class="c1"># Edit Pubs Model</span>
+<span class="c1">########################</span>
+
+
+<div class="viewcode-block" id="BeforeDoc"><a class="viewcode-back" href="../../guide.html#app.models.BeforeDoc">[docs]</a><span class="k">class</span> <span class="nc">BeforeDoc</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model that captures state of a document object&#39;s metadata prior to edits.  This will be a useful</span>
+<span class="sd">    point of comparison for later work with document metadata. (i.e. What did the user edit?)</span>
+
+<span class="sd">    :param id: primary key (auto-generated)</span>
+<span class="sd">    :type id: int</span>
+<span class="sd">    :param doc_id: foreign key for the EditDoc model, edit_docs.id</span>
+<span class="sd">    :type doc_id: int </span>
+<span class="sd">    :param title: title of document prior to edits</span>
+<span class="sd">    :type title: str</span>
+<span class="sd">    :param doi: Digital object identifier (DOI) prior to edits </span>
+<span class="sd">    :type doi: str </span>
+<span class="sd">    :param publication: Entitiy publishing document object prior to edits</span>
+<span class="sd">    :type publication: str </span>
+<span class="sd">    :param edit_doc: Establishes backref connection to EditDoc model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;before_docs&#39;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">doc_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;edit_docs.id&#39;</span><span class="p">))</span>
+
+    <span class="n">title</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+    <span class="n">doi</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+    <span class="n">publication</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+
+    <span class="n">edit_doc</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s1">&#39;EditDoc&#39;</span><span class="p">,</span>
+        <span class="n">backref</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;before_docs&#39;</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="s1">&#39;dynamic&#39;</span><span class="p">,</span>
+                           <span class="n">collection_class</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BeforeAuthor"><a class="viewcode-back" href="../../guide.html#app.models.BeforeAuthor">[docs]</a><span class="k">class</span> <span class="nc">BeforeAuthor</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Authors associated with BeforeDoc documents (i.e. documents prior to edits).</span>
+
+<span class="sd">    :param id: primary key (auto generated)</span>
+<span class="sd">    :type id: int </span>
+<span class="sd">    :param doc_id: foreign key for BeforeDoc model </span>
+<span class="sd">    :type doc_id: int </span>
+<span class="sd">    :param first_name: first name associated with document author prior to edits </span>
+<span class="sd">    :type first_name: str </span>
+<span class="sd">    :param last_name: last name associated with document author prior to edits </span>
+<span class="sd">    :type last_name: str </span>
+<span class="sd">    :param before_doc: Establishes backref connection to BeforeDoc</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;before_authors&quot;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">doc_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;before_docs.id&#39;</span><span class="p">))</span>
+
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">300</span><span class="p">))</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">500</span><span class="p">))</span>
+
+    <span class="c1"># Relationsip</span>
+    <span class="n">before_doc</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s1">&#39;BeforeDoc&#39;</span><span class="p">,</span>
+        <span class="n">backref</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;before_authors&#39;</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="s1">&#39;dynamic&#39;</span><span class="p">,</span>
+                           <span class="n">collection_class</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EditDoc"><a class="viewcode-back" href="../../guide.html#app.models.EditDoc">[docs]</a><span class="k">class</span> <span class="nc">EditDoc</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model that captures the state of a document after a user submits edits.  Changes</span>
+<span class="sd">    can later be identified by comparing EditDoc metadata to BeforeDoc metadata. </span>
+
+<span class="sd">    :param id: primary key (auto-generated)</span>
+<span class="sd">    :type id: int</span>
+<span class="sd">    :param date_added: date document added to database (useful for queries; auto-generated)</span>
+<span class="sd">    :type date_added: datetime </span>
+<span class="sd">    :param title: title of document after edits </span>
+<span class="sd">    :type title: str </span>
+<span class="sd">    :param doi: Digital Object Identifier after edits</span>
+<span class="sd">    :type doi: str </span>
+<span class="sd">    :param publication: Name of entity in which document is published after edits </span>
+<span class="sd">    :type publication: str </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;edit_docs&#39;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">date_added</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+    <span class="n">doi</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+    <span class="n">publication</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="EditAuthor"><a class="viewcode-back" href="../../guide.html#app.models.EditAuthor">[docs]</a><span class="k">class</span> <span class="nc">EditAuthor</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Authors associated with EditDoc model (i.e. authors after user edits)</span>
+
+<span class="sd">    :param id: primary key (auto-generated)</span>
+<span class="sd">    :type id: int </span>
+<span class="sd">    :param doc_id: foreign key for EditDoc model </span>
+<span class="sd">    :type doc_id: int </span>
+<span class="sd">    :param first_name: first name associated with document author after user edits </span>
+<span class="sd">    :type first_name: str </span>
+<span class="sd">    :param last_name: last name associated with document author after user edits </span>
+<span class="sd">    :type last_name: str </span>
+<span class="sd">    :param before_doc: Establishes backref connection to EditDoc</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;edit_authors&quot;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">doc_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;edit_docs.id&#39;</span><span class="p">))</span>
+
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">300</span><span class="p">))</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">500</span><span class="p">))</span>
+
+    <span class="c1"># Relationsip</span>
+    <span class="n">edit_doc</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s1">&#39;EditDoc&#39;</span><span class="p">,</span>
+        <span class="n">backref</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;edit_authors&#39;</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="s1">&#39;dynamic&#39;</span><span class="p">,</span>
+                           <span class="n">collection_class</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Ryan Wolfslayer
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

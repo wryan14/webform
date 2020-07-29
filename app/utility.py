@@ -13,7 +13,8 @@ static_path = os.path.join(directory, 'static')
 
 class CRef():
     """Leverages the crossref.restful API to gather metadata requried to submit a new publication
-    to the web form. The crossref schema can be found here: https://data.crossref.org/schemas/crossref_query_input2.0.xsd.
+    to the web form. The crossref schema can be found at https://data.crossref.org/schemas/crossref_query_input2.0.xsd.
+
     This class parses in a way that satisfies the needs of the Economist Webform project. If you need different metadata, 
     modify this class to target different fields. 
 
@@ -21,12 +22,12 @@ class CRef():
     :type doi: str
 
     Attributes:
-        doi (str): same as param
-        res (obj): response to the crossref.restful API call
-        title (str): title of the document returned in API call
-        publisher(str): name of publisher of document from API call
-        journal_name (str): publication which houses document returned in API call
-        year (str): year returned document was published
+        :doi (str): same as param
+        :res (obj): response to the crossref.restful API call
+        :title (str): title of the document returned in API call
+        :publisher(str): name of publisher of document from API call
+        :journal_name (str): publication which houses document returned in API call
+        :year (str): year returned document was published
     """
 
     def __init__(self, doi):
@@ -59,7 +60,7 @@ class CRef():
         response. 
 
         Attributes:
-            author_list (list): list of authors ['lastname, firstname',] from API response
+            :author_list (list): list of authors ['lastname, firstname',] from API response
         """
         self.author_list = []
         for auth in self.res['author']:
@@ -195,11 +196,8 @@ def cdm_pull(query_string=None):
     :param query_string: string that will return CDM API response with desired parameters
     :type query_string: str
 
-    Returns:
-        pandas.DataFrame
-
-    :Note: During the prototype stage of this project, this function will read in dummy data that replicates
-    the CDM API response, instead of calling a live API.  Make sure dummydata.xml is located in the static directory.
+    *Note* During the prototype stage of this project, this function will read in dummy data that replicates
+    the CDM API response, instead of calling a live API.  Make sure dummydata.xml is located in the static directory.\
     """
 
     # please note that this will pull dummy XML data with the needed schema; there will be no API call until production

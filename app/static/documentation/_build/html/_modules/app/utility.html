@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>app.utility &mdash; Economist Webforms 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Economist Webforms
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide.html">Programmer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Economist Webforms</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>app.utility</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for app.utility</h1><div class="highlight"><pre>
+<span></span><span class="c1"># utility.py</span>
+<span class="c1"># file contains python functions that assist with gathering data for main application</span>
+
+<span class="kn">from</span> <span class="nn">crossref.restful</span> <span class="kn">import</span> <span class="n">Works</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="n">static_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;static&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="CRef"><a class="viewcode-back" href="../../guide.html#app.utility.CRef">[docs]</a><span class="k">class</span> <span class="nc">CRef</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Leverages the crossref.restful API to gather metadata requried to submit a new publication</span>
+<span class="sd">    to the web form. The crossref schema can be found at https://data.crossref.org/schemas/crossref_query_input2.0.xsd.</span>
+
+<span class="sd">    This class parses in a way that satisfies the needs of the Economist Webform project. If you need different metadata, </span>
+<span class="sd">    modify this class to target different fields. </span>
+
+<span class="sd">    :param doi: Digital object identifier (doi); URL like string associated with a publication registered with CrossRef</span>
+<span class="sd">    :type doi: str</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        :doi (str): same as param</span>
+<span class="sd">        :res (obj): response to the crossref.restful API call</span>
+<span class="sd">        :title (str): title of the document returned in API call</span>
+<span class="sd">        :publisher(str): name of publisher of document from API call</span>
+<span class="sd">        :journal_name (str): publication which houses document returned in API call</span>
+<span class="sd">        :year (str): year returned document was published</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doi</span><span class="p">):</span>
+        <span class="c1"># make sure prefix is removed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">doi</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span>
+            <span class="s1">&#39;https://doi.org/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;http://doi.org/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="n">Works</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">res</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">doi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s1">&#39; &#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">publisher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tryfield</span><span class="p">(</span><span class="s1">&#39;publisher&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">journal_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tryfield</span><span class="p">(</span><span class="s1">&#39;container-title&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">journal_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">author_find</span><span class="p">()</span>  <span class="c1"># get authors</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;indexed&#39;</span><span class="p">][</span><span class="s1">&#39;date-parts&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<div class="viewcode-block" id="CRef.author_find"><a class="viewcode-back" href="../../guide.html#app.utility.CRef.author_find">[docs]</a>    <span class="k">def</span> <span class="nf">author_find</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to find and parse a list of authors returned in crossref.restful API</span>
+<span class="sd">        response. </span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            :author_list (list): list of authors [&#39;lastname, firstname&#39;,] from API response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">author_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">auth</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">author_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">auth</span><span class="p">[</span><span class="s1">&#39;family&#39;</span><span class="p">],</span> <span class="n">auth</span><span class="p">[</span><span class="s1">&#39;given&#39;</span><span class="p">]))</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span></div>
+
+    <span class="k">def</span> <span class="nf">tryfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">res</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+
+
+<div class="viewcode-block" id="cdm_api_trans"><a class="viewcode-back" href="../../guide.html#app.utility.cdm_api_trans">[docs]</a><span class="k">def</span> <span class="nf">cdm_api_trans</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Pythonic approach to running XSLT transformation.  The transformation takes CONTENTdm&#39;s</span>
+<span class="sd">    API response and converts the XML into HTML tables, which, in turn, can be converted to a pandas</span>
+<span class="sd">    dataframe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xsl_root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">XML</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span><span class="se">\</span>
+<span class="s1">    &lt;xsl:stylesheet version=&quot;1.0&quot;</span>
+<span class="s1">    xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;</span>
+<span class="s1">    &lt;xsl:template match=&quot;/&quot;&gt;</span>
+<span class="s1">        &lt;table border=&quot;1&quot;&gt;</span>
+<span class="s1">            &lt;tr&gt;</span>
+<span class="s1">                &lt;th&gt;Creator&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Title&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Date&lt;/th&gt;</span>
+<span class="s1">               &lt;th&gt;Date-Created&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;JEL Codes&lt;/th&gt;</span><span class="se">\</span>
+<span class="s1">                &lt;th&gt;Subject&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Publisher&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Published in&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Cite as&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Citation markup&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Earlier versions&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Later versions&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Volume&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Issue&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Identifier&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;m1&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Division affiliation&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Quarter&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Public address&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;Link to article&lt;/th&gt;</span>
+<span class="s1">                &lt;th&gt;DOI_Number&lt;/th&gt;</span>
+<span class="s1">            &lt;/tr&gt;</span>
+<span class="s1">            &lt;xsl:apply-templates /&gt;</span>
+<span class="s1">        &lt;/table&gt;</span>
+<span class="s1">    &lt;/xsl:template&gt;</span>
+<span class="s1">    &lt;xsl:template match=&quot;records&quot;&gt;</span>
+<span class="s1">        &lt;xsl:for-each select=&quot;record&quot;&gt;</span>
+<span class="s1">            &lt;tr&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;creata&quot;/&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;title&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;date&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;dmcreated&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;jel&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;subjec&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;publis&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;relatig&quot;/&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;identia&quot;/&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;citata&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;relatia&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;relatib&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;volume&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;issue&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;identi&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;m1&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;board&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;quarte&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;public&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;link&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">                &lt;td&gt;</span>
+<span class="s1">                    &lt;xsl:value-of select=&quot;doi&quot; /&gt;</span>
+<span class="s1">                &lt;/td&gt;</span>
+<span class="s1">            &lt;/tr&gt;</span>
+<span class="s1">        &lt;/xsl:for-each&gt;</span>
+<span class="s1">    &lt;/xsl:template&gt;</span>
+<span class="s1">    &lt;/xsl:stylesheet&gt;</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">etree</span><span class="o">.</span><span class="n">XSLT</span><span class="p">(</span><span class="n">xsl_root</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cdm_pull"><a class="viewcode-back" href="../../guide.html#app.utility.cdm_pull">[docs]</a><span class="k">def</span> <span class="nf">cdm_pull</span><span class="p">(</span><span class="n">query_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calls CONTENTdm&#39;s API and runs the cdm_api_trans XSLT transformation against te results.  </span>
+<span class="sd">    The function then converts the HTML tables from cdm_api_trans to a pandas dataframe, and</span>
+<span class="sd">    returns the output.</span>
+
+<span class="sd">    :param query_string: string that will return CDM API response with desired parameters</span>
+<span class="sd">    :type query_string: str</span>
+
+<span class="sd">    *Note* During the prototype stage of this project, this function will read in dummy data that replicates</span>
+<span class="sd">    the CDM API response, instead of calling a live API.  Make sure dummydata.xml is located in the static directory.\</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># please note that this will pull dummy XML data with the needed schema; there will be no API call until production</span>
+
+    <span class="c1"># s = requests.Session()</span>
+    <span class="c1"># res = s.get(query, verify=True)</span>
+    <span class="c1">#root = etree.fromstring(res.content)</span>
+
+    <span class="c1"># temporary code</span>
+    <span class="n">dummy_data</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">static_path</span><span class="p">,</span> <span class="s1">&#39;dummydata.xml&#39;</span><span class="p">)</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">dummy_data</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cdm_api_trans</span><span class="p">()(</span><span class="n">root</span><span class="p">)))[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># read html table</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Ryan Wolfslayer
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

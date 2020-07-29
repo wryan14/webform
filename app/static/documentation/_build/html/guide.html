@@ -1,0 +1,614 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Programmer’s Guide &mdash; Economist Webforms 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="About" href="readme.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Economist Webforms
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">About</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Programmer’s Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#project-structure">Project structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app">App</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#forms">Forms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#models">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-app.utility">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-app.views">Views</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Economist Webforms</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Programmer’s Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/guide.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="programmer-s-guide">
+<h1><a class="toc-backref" href="#id1">Programmer’s Guide</a><a class="headerlink" href="#programmer-s-guide" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Ryan Wolfslayer</p>
+</dd>
+<dt class="field-even">date</dt>
+<dd class="field-even"><p>July 29, 2020</p>
+</dd>
+</dl>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#programmer-s-guide" id="id1">Programmer’s Guide</a></p>
+<ul>
+<li><p><a class="reference internal" href="#project-structure" id="id2">Project structure</a></p></li>
+<li><p><a class="reference internal" href="#app" id="id3">App</a></p>
+<ul>
+<li><p><a class="reference internal" href="#forms" id="id4">Forms</a></p></li>
+<li><p><a class="reference internal" href="#models" id="id5">Models</a></p></li>
+<li><p><a class="reference internal" href="#module-app.utility" id="id6">Utilities</a></p></li>
+<li><p><a class="reference internal" href="#module-app.views" id="id7">Views</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="project-structure">
+<h2><a class="toc-backref" href="#id2">Project structure</a><a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>.
+├── LICENSE
+├── README.md
+├── app
+│   ├── __init__.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── static
+│   ├── templates
+│   ├── utility.py
+│   └── views.py
+├── config.py
+├── main.py
+├── requirements.txt
+├── spec.md
+├── tests
+│   ├── logs
+│   └── test_utility.py
+└── todos.md
+</pre></div>
+</div>
+</div>
+<div class="section" id="app">
+<h2><a class="toc-backref" href="#id3">App</a><a class="headerlink" href="#app" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="forms">
+<h3><a class="toc-backref" href="#id4">Forms</a><a class="headerlink" href="#forms" title="Permalink to this headline">¶</a></h3>
+<p>The forms are directly tied to the input fields within the templates. The following table should help you link the name of the form with the template name and output.</p>
+<span class="target" id="module-app.forms"></span><dl class="py class">
+<dt id="app.forms.AuthorForm">
+<em class="property">class </em><code class="sig-prename descclassname">app.forms.</code><code class="sig-name descname">AuthorForm</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/forms.html#AuthorForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.forms.AuthorForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">wtforms.form.Form</span></code></p>
+<p>Form that inherits from wtforms.Form class. Contains fields for author 
+first_name and last_name</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.forms.NewPublication">
+<em class="property">class </em><code class="sig-prename descclassname">app.forms.</code><code class="sig-name descname">NewPublication</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/forms.html#NewPublication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.forms.NewPublication" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_wtf.form.FlaskForm</span></code></p>
+<p>Contains the form-fields required to add a new publication. The author
+FieldList allows for up to 30 authors.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.forms.UpdatePublication">
+<em class="property">class </em><code class="sig-prename descclassname">app.forms.</code><code class="sig-name descname">UpdatePublication</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/forms.html#UpdatePublication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.forms.UpdatePublication" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_wtf.form.FlaskForm</span></code></p>
+<p>Contains the form-fields required to update a publication. The author
+FieldList allows for up to 30 authors.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.forms.UpdatePublicationStatus">
+<em class="property">class </em><code class="sig-prename descclassname">app.forms.</code><code class="sig-name descname">UpdatePublicationStatus</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/forms.html#UpdatePublicationStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.forms.UpdatePublicationStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_wtf.form.FlaskForm</span></code></p>
+<p>[IN PROGRESS] This will contain the form-fields required to udpate a 
+forthcoming publication.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="models">
+<h3><a class="toc-backref" href="#id5">Models</a><a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h3>
+<p>The models determine how the database is structured. It is imporant to understand how the database is structured, so we can make proper SQL queries.</p>
+<p><strong>ER Diagrams</strong></p>
+<p>These diagrams show a quick break down of the tables. Each document can have many authors, but, for now, authors can only have one document.
+The connection between the BeforeDoc and EditDoc model is one-to-one, meaning the BeforeDoc can only have one EditDoc connection and visa versa.</p>
+<p><em>New Publication model</em></p>
+<img alt="ER diagram of NewDoc model" src="_images/NewPub.png" />
+<p><em>Edit Publication model</em></p>
+<img alt="ER diagram of EditDoc model" src="_images/EditDoc.png" />
+<hr class="docutils" />
+<p><strong>models.py</strong></p>
+<span class="target" id="module-app.models"></span><dl class="py class">
+<dt id="app.models.Author">
+<em class="property">class </em><code class="sig-prename descclassname">app.models.</code><code class="sig-name descname">Author</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/models.html#Author"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.models.Author" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Model</span></code></p>
+<p>Author information associated with Doc model and adding new publication.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – primary key (auto-generated)</p></li>
+<li><p><strong>doc_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – foreign key from Doc model (Doc.id)</p></li>
+<li><p><strong>first_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – First name of author associated with Doc.id publication</p></li>
+<li><p><strong>last_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Last name of author associated with Doc.id publication</p></li>
+<li><p><strong>doc</strong> – Establishes backref connection to Doc model</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.models.BeforeAuthor">
+<em class="property">class </em><code class="sig-prename descclassname">app.models.</code><code class="sig-name descname">BeforeAuthor</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/models.html#BeforeAuthor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.models.BeforeAuthor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Model</span></code></p>
+<p>Authors associated with BeforeDoc documents (i.e. documents prior to edits).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – primary key (auto generated)</p></li>
+<li><p><strong>doc_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – foreign key for BeforeDoc model</p></li>
+<li><p><strong>first_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – first name associated with document author prior to edits</p></li>
+<li><p><strong>last_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – last name associated with document author prior to edits</p></li>
+<li><p><strong>before_doc</strong> – Establishes backref connection to BeforeDoc</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.models.BeforeDoc">
+<em class="property">class </em><code class="sig-prename descclassname">app.models.</code><code class="sig-name descname">BeforeDoc</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/models.html#BeforeDoc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.models.BeforeDoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Model</span></code></p>
+<p>Model that captures state of a document object’s metadata prior to edits.  This will be a useful
+point of comparison for later work with document metadata. (i.e. What did the user edit?)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – primary key (auto-generated)</p></li>
+<li><p><strong>doc_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – foreign key for the EditDoc model, edit_docs.id</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – title of document prior to edits</p></li>
+<li><p><strong>doi</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Digital object identifier (DOI) prior to edits</p></li>
+<li><p><strong>publication</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Entitiy publishing document object prior to edits</p></li>
+<li><p><strong>edit_doc</strong> – Establishes backref connection to EditDoc model</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.models.Doc">
+<em class="property">class </em><code class="sig-prename descclassname">app.models.</code><code class="sig-name descname">Doc</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/models.html#Doc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.models.Doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Model</span></code></p>
+<p>Model associated with adding a new publication.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – primary key (auto-generated)</p></li>
+<li><p><strong>date_added</strong> (<em>datetime</em>) – date document added to database (useful for queries; auto-generated)</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – title of new document</p></li>
+<li><p><strong>doi</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Digitial Object Identifier (DOI), should not contain <a class="reference external" href="https://doi.org/">https://doi.org/</a></p></li>
+<li><p><strong>publisher</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Name of entity publishing new object</p></li>
+<li><p><strong>publication</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Name of entity in which object is published</p></li>
+<li><p><strong>publication_year</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Year entity published (different from date_added)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.models.EditAuthor">
+<em class="property">class </em><code class="sig-prename descclassname">app.models.</code><code class="sig-name descname">EditAuthor</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/models.html#EditAuthor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.models.EditAuthor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Model</span></code></p>
+<p>Authors associated with EditDoc model (i.e. authors after user edits)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – primary key (auto-generated)</p></li>
+<li><p><strong>doc_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – foreign key for EditDoc model</p></li>
+<li><p><strong>first_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – first name associated with document author after user edits</p></li>
+<li><p><strong>last_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – last name associated with document author after user edits</p></li>
+<li><p><strong>before_doc</strong> – Establishes backref connection to EditDoc</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="app.models.EditDoc">
+<em class="property">class </em><code class="sig-prename descclassname">app.models.</code><code class="sig-name descname">EditDoc</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/models.html#EditDoc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.models.EditDoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Model</span></code></p>
+<p>Model that captures the state of a document after a user submits edits.  Changes
+can later be identified by comparing EditDoc metadata to BeforeDoc metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – primary key (auto-generated)</p></li>
+<li><p><strong>date_added</strong> (<em>datetime</em>) – date document added to database (useful for queries; auto-generated)</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – title of document after edits</p></li>
+<li><p><strong>doi</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Digital Object Identifier after edits</p></li>
+<li><p><strong>publication</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Name of entity in which document is published after edits</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-app.utility">
+<span id="utilities"></span><h3><a class="toc-backref" href="#id6">Utilities</a><a class="headerlink" href="#module-app.utility" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="app.utility.CRef">
+<em class="property">class </em><code class="sig-prename descclassname">app.utility.</code><code class="sig-name descname">CRef</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">doi</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utility.html#CRef"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.utility.CRef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Leverages the crossref.restful API to gather metadata requried to submit a new publication
+to the web form. The crossref schema can be found at <a class="reference external" href="https://data.crossref.org/schemas/crossref_query_input2.0.xsd">https://data.crossref.org/schemas/crossref_query_input2.0.xsd</a>.</p>
+<p>This class parses in a way that satisfies the needs of the Economist Webform project. If you need different metadata, 
+modify this class to target different fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doi</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Digital object identifier (doi); URL like string associated with a publication registered with CrossRef</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Attributes:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">doi (str)</dt>
+<dd class="field-odd"><p>same as param</p>
+</dd>
+<dt class="field-even">res (obj)</dt>
+<dd class="field-even"><p>response to the crossref.restful API call</p>
+</dd>
+<dt class="field-odd">title (str)</dt>
+<dd class="field-odd"><p>title of the document returned in API call</p>
+</dd>
+<dt class="field-even">publisher(str)</dt>
+<dd class="field-even"><p>name of publisher of document from API call</p>
+</dd>
+<dt class="field-odd">journal_name (str)</dt>
+<dd class="field-odd"><p>publication which houses document returned in API call</p>
+</dd>
+<dt class="field-even">year (str)</dt>
+<dd class="field-even"><p>year returned document was published</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="app.utility.CRef.author_find">
+<code class="sig-name descname">author_find</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utility.html#CRef.author_find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.utility.CRef.author_find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to find and parse a list of authors returned in crossref.restful API
+response.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">author_list (list)</dt>
+<dd class="field-odd"><p>list of authors [‘lastname, firstname’,] from API response</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.utility.cdm_api_trans">
+<code class="sig-prename descclassname">app.utility.</code><code class="sig-name descname">cdm_api_trans</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utility.html#cdm_api_trans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.utility.cdm_api_trans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pythonic approach to running XSLT transformation.  The transformation takes CONTENTdm’s
+API response and converts the XML into HTML tables, which, in turn, can be converted to a pandas
+dataframe.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.utility.cdm_pull">
+<code class="sig-prename descclassname">app.utility.</code><code class="sig-name descname">cdm_pull</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">query_string</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/utility.html#cdm_pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.utility.cdm_pull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls CONTENTdm’s API and runs the cdm_api_trans XSLT transformation against te results.  
+The function then converts the HTML tables from cdm_api_trans to a pandas dataframe, and
+returns the output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – string that will return CDM API response with desired parameters</p>
+</dd>
+</dl>
+<p><em>Note</em> During the prototype stage of this project, this function will read in dummy data that replicates
+the CDM API response, instead of calling a live API.  Make sure dummydata.xml is located in the static directory.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-app.views">
+<span id="views"></span><h3><a class="toc-backref" href="#id7">Views</a><a class="headerlink" href="#module-app.views" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt id="app.views.cleartable">
+<code class="sig-prename descclassname">app.views.</code><code class="sig-name descname">cleartable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/views.html#cleartable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.views.cleartable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears null values from the edit_docs database; not intended for public use.
+For an unknown reason, the database model adds a blank row in-between each
+submit. To make the database more friendly to developers, this function does 
+some cleanup.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>./templates/welcome_page.html</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.views.dash_app">
+<code class="sig-prename descclassname">app.views.</code><code class="sig-name descname">dash_app</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/views.html#dash_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.views.dash_app" title="Permalink to this definition">¶</a></dt>
+<dd><p>This dash app presents a Dash table of fields that a user can select. Once selected, 
+the data is stored into the flask.session and used in the editpub process.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.views.editpub">
+<code class="sig-prename descclassname">app.views.</code><code class="sig-name descname">editpub</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/views.html#editpub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.views.editpub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit Publication page. If the users selects a table row from dash_app template, 
+this view saves the stored flask session data into the BeforeDoc database model.
+Any changes submitted to this view are then stored in the EditDoc model.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>./templates/editpub.html</p></li>
+<li><p>./templates/success_edit.html (upon submit)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.views.home">
+<code class="sig-prename descclassname">app.views.</code><code class="sig-name descname">home</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/views.html#home"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.views.home" title="Permalink to this definition">¶</a></dt>
+<dd><p>Welcome page that provides options to navigate to new, edit, or forthcoming
+functionality.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>./templates/welcome_page.html</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.views.newpub">
+<code class="sig-prename descclassname">app.views.</code><code class="sig-name descname">newpub</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/views.html#newpub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.views.newpub" title="Permalink to this definition">¶</a></dt>
+<dd><p>New publication page where users can fill in the NewPublication form,
+and save form to Doc database table.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>./templates/newpub.html</p></li>
+<li><p>./templates/success_new.html (upon submit)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.views.success_edit">
+<code class="sig-prename descclassname">app.views.</code><code class="sig-name descname">success_edit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/views.html#success_edit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.views.success_edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Confirmation page after form submission for edit items</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.views.success_new">
+<code class="sig-prename descclassname">app.views.</code><code class="sig-name descname">success_new</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/views.html#success_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.views.success_new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Confirmation page after form submission for new items</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.views.success_update">
+<code class="sig-prename descclassname">app.views.</code><code class="sig-name descname">success_update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/views.html#success_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.views.success_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Confirmation page after form submission for update item</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="app.views.updatepub">
+<code class="sig-prename descclassname">app.views.</code><code class="sig-name descname">updatepub</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/views.html#updatepub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.views.updatepub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders the forthcoming process.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>./templates/updatepub.html</p></li>
+<li><p>./templates/success_update.html (upon submit)</p></li>
+</ul>
+</dd>
+</dl>
+<p>View still in progress</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="readme.html" class="btn btn-neutral float-left" title="About" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Ryan Wolfslayer
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,585 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>app.views &mdash; Economist Webforms 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Economist Webforms
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide.html">Programmer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Economist Webforms</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>app.views</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for app.views</h1><div class="highlight"><pre>
+<span></span><span class="c1"># views.py</span>
+<span class="c1"># views establish the structure and navigation of the webform.</span>
+
+<span class="kn">from</span> <span class="nn">app</span> <span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">dapp</span><span class="p">,</span> <span class="n">db</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Doc</span><span class="p">,</span> <span class="n">Author</span><span class="p">,</span> <span class="n">EditDoc</span><span class="p">,</span> <span class="n">BeforeDoc</span><span class="p">,</span> <span class="n">BeforeAuthor</span><span class="p">,</span> <span class="n">EditAuthor</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">url_for</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">NewPublication</span><span class="p">,</span> <span class="n">UpdatePublication</span><span class="p">,</span> <span class="n">UpdatePublicationStatus</span>
+<span class="kn">from</span> <span class="nn">.utility</span> <span class="kn">import</span> <span class="n">CRef</span><span class="p">,</span> <span class="n">cdm_pull</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">text</span>
+<span class="kn">import</span> <span class="nn">flask</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="home"><a class="viewcode-back" href="../../guide.html#app.views.home">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">home</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Welcome page that provides options to navigate to new, edit, or forthcoming</span>
+<span class="sd">    functionality.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * ./templates/welcome_page.html</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;welcome_page.html&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="newpub"><a class="viewcode-back" href="../../guide.html#app.views.newpub">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/new&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">newpub</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;New publication page where users can fill in the NewPublication form,</span>
+<span class="sd">    and save form to Doc database table. </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * ./templates/newpub.html</span>
+<span class="sd">        * ./templates/success_new.html (upon submit)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># initial variables should exist, but contain an empty string</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">doi</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">publisher</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">publication</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">lname</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;doifind&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">:</span>   <span class="c1"># run utilities.CRef function when user submits doifind form</span>
+        <span class="n">doi</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;doifind&#39;</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cr</span> <span class="o">=</span> <span class="n">CRef</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">cr</span><span class="o">.</span><span class="n">title</span>
+            <span class="n">publisher</span> <span class="o">=</span> <span class="n">cr</span><span class="o">.</span><span class="n">publisher</span>
+            <span class="n">publication</span> <span class="o">=</span> <span class="n">cr</span><span class="o">.</span><span class="n">journal_name</span>
+            <span class="n">year</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">cr</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+            <span class="n">authors</span> <span class="o">=</span> <span class="n">cr</span><span class="o">.</span><span class="n">author_list</span>
+
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="n">form</span> <span class="o">=</span> <span class="n">NewPublication</span><span class="p">()</span>  <span class="c1"># create form</span>
+
+    <span class="c1"># if utilities.CRef successfully parses the DOI, replace the empty form field with parsed content</span>
+    <span class="k">if</span> <span class="n">title</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">title</span>
+
+    <span class="k">if</span> <span class="n">doi</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">doi</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">doi</span>
+
+    <span class="k">if</span> <span class="n">publisher</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">publisher</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">publisher</span>
+
+    <span class="k">if</span> <span class="n">publication</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">publication</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">publication</span>
+
+    <span class="k">if</span> <span class="n">year</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">year</span>
+
+    <span class="k">if</span> <span class="n">authors</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">auth_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">authors</span><span class="p">):</span>
+            <span class="n">lname</span> <span class="o">=</span> <span class="n">auth_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">auth_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">form</span><span class="o">.</span><span class="n">authors</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">fname</span>
+                <span class="n">form</span><span class="o">.</span><span class="n">authors</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">last_name</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">lname</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">form</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="n">append_entry</span><span class="p">()</span>
+                <span class="n">form</span><span class="o">.</span><span class="n">authors</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">fname</span>
+                <span class="n">form</span><span class="o">.</span><span class="n">authors</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">last_name</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">lname</span>
+
+    <span class="k">if</span> <span class="s1">&#39;doifind&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">:</span>   <span class="c1"># needed to make a distinction between new form and doifind</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">():</span>
+            <span class="n">new_doc</span> <span class="o">=</span> <span class="n">Doc</span><span class="p">()</span>  <span class="c1"># call database model</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_doc</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">new_author</span> <span class="o">=</span> <span class="n">Author</span><span class="p">(</span><span class="o">**</span><span class="n">author</span><span class="p">)</span>
+                <span class="c1">#  add to doc database entry</span>
+                <span class="n">new_doc</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_author</span><span class="p">)</span>
+
+            <span class="c1"># transfer the submitted form data to the database model</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">doi</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span>
+                <span class="s1">&#39;https://doi.org/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;http://doi.org/&#39;</span><span class="p">)</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">publisher</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">publisher</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">publication</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">publication</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">publication_year</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">date_added</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+            <span class="n">db_results</span> <span class="o">=</span> <span class="n">Doc</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">new_doc</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">db_results</span><span class="o">.</span><span class="n">title</span>
+            <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Doi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">db_results</span><span class="o">.</span><span class="n">doi</span>
+
+            <span class="n">authors</span> <span class="o">=</span> <span class="n">Author</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">doc_id</span><span class="o">=</span><span class="n">new_doc</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">author_list</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">last_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">authors</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
+            <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Author_list&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">author_list</span>
+
+            <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Publication&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">db_results</span><span class="o">.</span><span class="n">publication</span>
+            <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Publisher&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">db_results</span><span class="o">.</span><span class="n">publisher</span>
+
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;success_new&#39;</span><span class="p">))</span>
+    <span class="n">docs</span> <span class="o">=</span> <span class="n">Doc</span><span class="o">.</span><span class="n">query</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;newpub.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="editpub"><a class="viewcode-back" href="../../guide.html#app.views.editpub">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/edit&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">editpub</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Edit Publication page. If the users selects a table row from dash_app template, </span>
+<span class="sd">        this view saves the stored flask session data into the BeforeDoc database model.</span>
+<span class="sd">        Any changes submitted to this view are then stored in the EditDoc model. </span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            * ./templates/editpub.html</span>
+<span class="sd">            * ./templates/success_edit.html (upon submit)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># initial variables should contain empty string</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">doi</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">publication</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">lname</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># EditDoc and BeforeDoc are related, so we need to create instances of both in order to store</span>
+        <span class="c1"># the BeforeDoc state. Assuming the user selects a row, flask.session data comes from the dash tables (see __init__.py)</span>
+        <span class="n">new_doc</span> <span class="o">=</span> <span class="n">EditDoc</span><span class="p">()</span>
+        <span class="n">before_doc</span> <span class="o">=</span> <span class="n">BeforeDoc</span><span class="p">()</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_doc</span><span class="p">)</span>
+        <span class="n">dash_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">flask</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">dash_data</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">][</span><span class="s1">&#39;0&#39;</span><span class="p">]</span>
+        <span class="n">doi</span> <span class="o">=</span> <span class="n">dash_data</span><span class="p">[</span><span class="s1">&#39;DOI_Number&#39;</span><span class="p">][</span><span class="s1">&#39;0&#39;</span><span class="p">]</span>
+        <span class="n">publication</span> <span class="o">=</span> <span class="n">dash_data</span><span class="p">[</span><span class="s1">&#39;Published in&#39;</span><span class="p">][</span><span class="s1">&#39;0&#39;</span><span class="p">]</span>
+        <span class="n">authors</span> <span class="o">=</span> <span class="n">dash_data</span><span class="p">[</span><span class="s1">&#39;Creator&#39;</span><span class="p">][</span><span class="s1">&#39;0&#39;</span><span class="p">]</span>
+
+        <span class="c1"># append authors to database</span>
+        <span class="k">if</span> <span class="n">authors</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">auth_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">authors</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)):</span>
+                <span class="n">lname</span> <span class="o">=</span> <span class="n">auth_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">fname</span> <span class="o">=</span> <span class="n">auth_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+                <span class="n">before_author</span> <span class="o">=</span> <span class="n">BeforeAuthor</span><span class="p">(</span><span class="n">first_name</span><span class="o">=</span><span class="n">fname</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="n">lname</span><span class="p">)</span>
+                <span class="n">before_doc</span><span class="o">.</span><span class="n">before_authors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">before_author</span><span class="p">)</span>
+
+        <span class="n">before_doc</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="n">before_doc</span><span class="o">.</span><span class="n">publication</span> <span class="o">=</span> <span class="n">publication</span>
+        <span class="n">before_doc</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">doi</span>
+        <span class="n">new_doc</span><span class="o">.</span><span class="n">before_docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">before_doc</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">flask</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="n">form</span> <span class="o">=</span> <span class="n">UpdatePublication</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">title</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">title</span>
+    <span class="k">if</span> <span class="n">doi</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">doi</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">doi</span>
+    <span class="k">if</span> <span class="n">publication</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">publication</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">publication</span>
+
+    <span class="k">if</span> <span class="n">authors</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">auth_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">authors</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)):</span>
+            <span class="n">lname</span> <span class="o">=</span> <span class="n">auth_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">auth_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">form</span><span class="o">.</span><span class="n">authors</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">fname</span>
+                <span class="n">form</span><span class="o">.</span><span class="n">authors</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">last_name</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">lname</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">form</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="n">append_entry</span><span class="p">()</span>
+                <span class="n">form</span><span class="o">.</span><span class="n">authors</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">fname</span>
+                <span class="n">form</span><span class="o">.</span><span class="n">authors</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">last_name</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">lname</span>
+    <span class="k">if</span> <span class="s1">&#39;doifind&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">():</span>
+            <span class="n">new_doc</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">EditDoc</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span>
+                <span class="n">EditDoc</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+            <span class="c1"># edits the last created record (better way?)</span>
+            <span class="n">new_doc</span> <span class="o">=</span> <span class="n">new_doc</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">new_doc</span><span class="o">.</span><span class="n">id</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">new_authors</span> <span class="o">=</span> <span class="n">EditAuthor</span><span class="p">(</span><span class="o">**</span><span class="n">author</span><span class="p">)</span>
+                <span class="c1"># add to doc database entry</span>
+                <span class="n">new_doc</span><span class="o">.</span><span class="n">edit_authors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_authors</span><span class="p">)</span>
+
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">doi</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span>
+                <span class="s1">&#39;https://doi.org/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;http://doi.org/&#39;</span><span class="p">)</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">publication</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">publication</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">date_added</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+            <span class="c1"># store data for success page from database</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">                SELECT edit_docs.id, before_docs.title, edit_docs.title, </span>
+<span class="s1">                before_docs.doi, edit_docs.doi, </span>
+<span class="s1">                before_docs.publication, edit_docs.publication</span>
+<span class="s1">                FROM before_docs </span>
+<span class="s1">                INNER JOIN edit_docs ON before_docs.doc_id=edit_docs.id;</span>
+<span class="s1">            &#39;&#39;&#39;</span><span class="p">)</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Id&#39;</span><span class="p">,</span> <span class="s1">&#39;Title-Before&#39;</span><span class="p">,</span> <span class="s1">&#39;Title-After&#39;</span><span class="p">,</span> <span class="s1">&#39;DOI-Before&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;DOI-After&#39;</span><span class="p">,</span> <span class="s1">&#39;Publication-Before&#39;</span><span class="p">,</span> <span class="s1">&#39;Publication-After&#39;</span><span class="p">]</span>
+
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">new_doc</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+
+            <span class="c1"># assign session values</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Title-Before&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Title-After&#39;</span><span class="p">]:</span>
+                    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Title-Before&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Title-Before&#39;</span><span class="p">]</span>
+                    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Title-After&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Title-After&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Title-Before&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Title-After&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;DOI-Before&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;DOI-After&#39;</span><span class="p">]:</span>
+                    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;DOI-Before&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;DOI-Before&#39;</span><span class="p">]</span>
+                    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;DOI-After&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;DOI-After&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;DOI-Before&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;DOI-After&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Publication-Before&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Publication-After&#39;</span><span class="p">]:</span>
+                    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Publication-Before&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Publication-Before&#39;</span><span class="p">]</span>
+                    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Publication-After&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Publication-After&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Publication-Before&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Publication-After&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># find the edit_doc id, so we can correctly combine before authors</span>
+            <span class="n">find_before_doc_id</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">                SELECT id FROM before_docs</span>
+<span class="s1">                WHERE doc_id=</span><span class="si">{}</span><span class="s1">;</span>
+<span class="s1">            &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_doc</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+
+            <span class="n">find_before_results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">find_before_doc_id</span><span class="p">)</span>
+            <span class="n">find_before_id</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">find_before_results</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="c1"># find authors</span>
+            <span class="n">edit_author_sql</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">                SELECT * FROM edit_authors</span>
+<span class="s1">                WHERE doc_id=</span><span class="si">{}</span><span class="s1">;</span>
+<span class="s1">            &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_doc</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+
+            <span class="n">before_author_sql</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">                SELECT * FROM before_authors</span>
+<span class="s1">                WHERE doc_id=</span><span class="si">{}</span><span class="s1">;</span>
+<span class="s1">            &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">find_before_id</span><span class="p">))</span>
+
+            <span class="n">edit_author_results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">edit_author_sql</span><span class="p">)</span>
+            <span class="n">before_author_results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">before_author_sql</span><span class="p">)</span>
+
+            <span class="c1"># author data</span>
+            <span class="n">edit_author_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">edit_author_results</span><span class="p">]</span>
+            <span class="n">before_author_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">before_author_results</span><span class="p">]</span>
+
+            <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Id&#39;</span><span class="p">,</span> <span class="s1">&#39;DocId&#39;</span><span class="p">,</span> <span class="s1">&#39;FirstName&#39;</span><span class="p">,</span> <span class="s1">&#39;LastName&#39;</span><span class="p">]</span>
+
+            <span class="n">edit_author_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">edit_author_data</span><span class="p">)</span>
+            <span class="n">before_author_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">before_author_data</span><span class="p">)</span>
+
+            <span class="c1"># combine first and last names of authors for success page</span>
+            <span class="n">edit_author_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="nb">zip</span><span class="p">(</span><span class="n">edit_author_df</span><span class="p">[</span><span class="s1">&#39;FirstName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">edit_author_df</span><span class="p">[</span><span class="s1">&#39;LastName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+            <span class="n">before_author_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span>
+                <span class="n">before_author_df</span><span class="p">[</span><span class="s1">&#39;FirstName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">before_author_df</span><span class="p">[</span><span class="s1">&#39;LastName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+
+            <span class="c1"># turn list of tuples into list of strings</span>
+            <span class="n">edit_author_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">edit_author_list</span><span class="p">]</span>
+            <span class="n">before_author_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">before_author_list</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">edit_author_list</span> <span class="o">!=</span> <span class="n">before_author_list</span><span class="p">:</span>
+                <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Author-Before&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">before_author_list</span>
+                <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Author-After&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">edit_author_list</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Author-Before&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">session</span><span class="p">[</span><span class="s1">&#39;Author-After&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;success_edit&#39;</span><span class="p">))</span>
+    <span class="n">edit_docs</span> <span class="o">=</span> <span class="n">EditDoc</span><span class="o">.</span><span class="n">query</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;editpub.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="updatepub"><a class="viewcode-back" href="../../guide.html#app.views.updatepub">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/update&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">updatepub</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Renders the forthcoming process.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        * ./templates/updatepub.html</span>
+<span class="sd">        * ./templates/success_update.html (upon submit)</span>
+
+<span class="sd">    View still in progress</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">UpdatePublicationStatus</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">():</span>
+
+        <span class="n">title</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;success_update&#39;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;updatepub.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cleartable"><a class="viewcode-back" href="../../guide.html#app.views.cleartable">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/clear_table&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">cleartable</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Clears null values from the edit_docs database; not intended for public use.</span>
+<span class="sd">        For an unknown reason, the database model adds a blank row in-between each</span>
+<span class="sd">        submit. To make the database more friendly to developers, this function does </span>
+<span class="sd">        some cleanup. </span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            * ./templates/welcome_page.html</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">remove_null</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        DELETE from edit_docs</span>
+<span class="s1">        WHERE title is null;</span>
+<span class="s1">        &#39;&#39;&#39;</span><span class="p">)</span>
+
+    <span class="n">db</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">remove_null</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="success_new"><a class="viewcode-back" href="../../guide.html#app.views.success_new">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/success_new&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">success_new</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Confirmation page after form submission for new items&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;success_new.html&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="success_edit"><a class="viewcode-back" href="../../guide.html#app.views.success_edit">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/success_edit&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">success_edit</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Confirmation page after form submission for edit items&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;success_edit.html&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="success_update"><a class="viewcode-back" href="../../guide.html#app.views.success_update">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/success_update&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">success_update</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Confirmation page after form submission for update item&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;success_update.html&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="dash_app"><a class="viewcode-back" href="../../guide.html#app.views.dash_app">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/edit_table&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">dash_app</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;This dash app presents a Dash table of fields that a user can select. Once selected, </span>
+<span class="sd">    the data is stored into the flask.session and used in the editpub process. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;edittable&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;editpub&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dapp</span><span class="o">.</span><span class="n">index</span><span class="p">()</span></div>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/documentation/&lt;dir&gt;/&lt;filename&gt;&#39;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;static&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="k">def</span> <span class="nf">doc</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;index.html&#39;</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">send_static_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Ryan Wolfslayer
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
