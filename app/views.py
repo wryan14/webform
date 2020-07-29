@@ -1,9 +1,11 @@
+# views.py
+# views establish the structure and navigation of the webform.
+
 from app import app, dapp, db
 from .models import Doc, Author, EditDoc, BeforeDoc, BeforeAuthor, EditAuthor
 from flask import render_template, redirect, url_for, session, request
 from .forms import NewPublication, UpdatePublication, UpdatePublicationStatus
 from .utility import CRef, cdm_pull
-from sqlalchemy import text
 import flask
 import json
 import datetime
@@ -12,14 +14,25 @@ import pandas as pd
 
 @app.route('/')
 def home():
-    '''Welcome page with three option dropdown'''
+    """Welcome page that provides options to navigate to new, edit, or forthcoming
+    functionality.
+
+    Returns:
+        ./templates/welcome_page.html
+    """
     return render_template('welcome_page.html')
 
 
 @app.route('/new', methods=['GET', 'POST'])
 def newpub():
-    '''Renders new publication web-form'''
+    """New publication page where users can fill in the NewPublication form,
+    and save form to Doc database table. 
 
+    Returns:
+        ./templates/newpub.html
+        ./templates/success_new.html (upon submit)
+    """
+    # initial variables should exist, but contain an empty string
     title = ''
     doi = ''
     publisher = ''
@@ -29,7 +42,7 @@ def newpub():
     lname = ''
     fname = ''
 
-    if 'doifind' in request.form:
+    if 'doifind' in request.form:   # run utilities.CRef function when user submits doifind form
         doi = request.form['doifind']
         try:
             cr = CRef(doi)
@@ -42,8 +55,9 @@ def newpub():
         except TypeError:
             pass
 
-    form = NewPublication()
+    form = NewPublication() # create form
 
+    # if utilities.CRef successfully parses the DOI, replace the empty form field with parsed content
     if title != '':
         form.title.data = title
 
@@ -72,15 +86,16 @@ def newpub():
                 form.authors[idx].first_name.data = fname
                 form.authors[idx].last_name.data = lname
 
-    if 'doifind' not in request.form:
+    if 'doifind' not in request.form:   # needed to make a distinction between new form and doifind
         if form.validate_on_submit():
-            new_doc = Doc()
+            new_doc = Doc() # call database model
             db.session.add(new_doc)
             for author in form.authors.data:
                 new_author = Author(**author)
                 #  add to doc database entry
                 new_doc.authors.append(new_author)
-
+            
+            # transfer the submitted form data to the database model
             new_doc.title = form.title.data
             new_doc.doi = form.doi.data.strip(
                 'https://doi.org/').strip('http://doi.org/')
@@ -109,8 +124,16 @@ def newpub():
 
 @app.route('/edit', methods=['GET', 'POST'])
 def editpub():
-    '''Renders new publication web-form'''
+    """Edit Publication page. If the users selects a table row from dash_app template, 
+        this view saves the stored flask session data into the BeforeDoc database model.
+        Any changes submitted to this view are then stored in the EditDoc model. 
+    
+        Returns:
+            ./templates/editpub.html
+            ./templates/success_edit.html (upon submit)
+    """
 
+    # initial variables should contain empty string
     title = ''
     doi = ''
     publication = ''
@@ -119,6 +142,8 @@ def editpub():
     fname = ''
 
     try:
+        # EditDoc and BeforeDoc are related, so we need to create instances of both in order to store
+        # the BeforeDoc state. Assuming the user selects a row, flask.session data comes from the dash tables (see __init__.py)
         new_doc = EditDoc()
         before_doc = BeforeDoc()
         db.session.add(new_doc)
@@ -141,8 +166,7 @@ def editpub():
         before_doc.publication = publication
         before_doc.doi = doi
         new_doc.before_docs.append(before_doc)
-        db.session.commit()  # This could potentially end up storing too much data in the database
-        # Is the solution to develop a script that periodically deletes null values from the SQLite database?
+        db.session.commit()  
         flask.session.clear()
     except KeyError:
         pass
@@ -172,7 +196,7 @@ def editpub():
         if form.validate_on_submit():
             new_doc = db.session.query(EditDoc).order_by(
                 EditDoc.id.desc()).first()
-            # may not be the best way, but this edits the last created record
+            # edits the last created record (better way?)
             new_doc = new_doc.query.get(new_doc.id-1)
 
             for author in form.authors.data:
@@ -260,6 +284,7 @@ def editpub():
             before_author_df = pd.DataFrame(
                 columns=columns, data=before_author_data)
 
+            # combine first and last names of authors for success page
             edit_author_list = list(
                 zip(edit_author_df['FirstName'].tolist(), edit_author_df['LastName'].tolist()))
             before_author_list = list(zip(
@@ -285,15 +310,20 @@ def editpub():
 
 @app.route('/update', methods=['GET', 'POST'])
 def updatepub():
-    '''Renders new publication web-form'''
+    """Renders the forthcoming process.
 
+    Returns:
+        ./templates/updatepub.html
+        ./templates/success_update.html (upon submit)
+
+    View still in progress
+    """
     title = False
     form = UpdatePublicationStatus()
 
     if form.validate_on_submit():
 
         title = form.title.data
-        print(title)
         form.title.data = ''
         return redirect(url_for('success_update'))
 
@@ -302,7 +332,14 @@ def updatepub():
 
 @app.route('/clear_table', methods=['GET', 'POST'])
 def cleartable():
-    '''Clears null values from the edit_docs database; not intended for public use'''
+    """Clears null values from the edit_docs database; not intended for public use.
+        For an unknown reason, the database model adds a blank row in-between each
+        submit. To make the database more friendly to developers, this function does 
+        some cleanup. 
+
+        Returns:
+            ./templates/welcome_page.html
+    """
     remove_null = text('''
         DELETE from edit_docs
         WHERE title is null;
@@ -314,24 +351,27 @@ def cleartable():
 
 @app.route('/success_new')
 def success_new():
-    '''Confirmation page after form submission for new items'''
+    """Confirmation page after form submission for new items"""
     return render_template('success_new.html')
 
 
 @app.route('/success_edit')
 def success_edit():
-    '''Confirmation page after form submission for edit items'''
+    """Confirmation page after form submission for edit items"""
     return render_template('success_edit.html')
 
 
 @app.route('/success_update')
 def success_update():
-    '''Confirmation page after form submission for update item'''
+    """Confirmation page after form submission for update item"""
     return render_template('success_update.html')
 
 
 @app.route("/edit_table", methods=['GET', 'POST'])
 def dash_app():
+    """This dash app presents a Dash table of fields that a user can select. Once selected, 
+    the data is stored into the flask.session and used in the editpub process. 
+    """
 
     if 'edittable' in request.form:
         return render_template('editpub')
