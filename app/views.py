@@ -6,6 +6,7 @@ from .models import Doc, Author, EditDoc, BeforeDoc, BeforeAuthor, EditAuthor
 from flask import render_template, redirect, url_for, session, request
 from .forms import NewPublication, UpdatePublication, UpdatePublicationStatus
 from .utility import CRef, cdm_pull
+from sqlalchemy import text
 import flask
 import json
 import datetime

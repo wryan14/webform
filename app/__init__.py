@@ -7,7 +7,6 @@ __email__="ryan.wolfslayer@gmail.com"
 # File brings different project components together into one importable application
 # This file also creates the Dash data table used with Editing publications
 
-from app import views
 from app.utility import cdm_pull
 from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -154,3 +153,5 @@ def update_display(rows, derived_virtual_selected_rows):
     flask.session['data'] = pd.DataFrame(selected_rows).to_json()
 
     return data
+
+from app import views
