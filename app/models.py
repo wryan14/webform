@@ -1,8 +1,10 @@
-from flask_sqlalchemy import SQLAlchemy
-
+# models.py
+# This document contains all of the models required to store data in a SQLite database.
 # Dynamic author fields heavily borrows from https://www.rmedgar.com/blog/dynamic-fields-flask-wtf
 
-db = SQLAlchemy()
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy() # start database
 
 ########################
 # New Pubs Model
@@ -10,7 +12,23 @@ db = SQLAlchemy()
 
 
 class Doc(db.Model):
-    """Stores docs."""
+    """Model associated with adding a new publication.
+
+    :param id: primary key (auto-generated)
+    :type id: int 
+    :param date_added: date document added to database (useful for queries; auto-generated)
+    :type date_added: datetime
+    :param title: title of new document 
+    :type title: str
+    :param doi: Digitial Object Identifier (DOI), should not contain https://doi.org/
+    :type doi: str
+    :param publisher: Name of entity publishing new object
+    :type publisher: str 
+    :param publication: Name of entity in which object is published
+    :type publication: str
+    :param publication_year: Year entity published (different from date_added)
+    :type publication_year: str
+    """
     __tablename__ = 'docs'
     id = db.Column(db.Integer, primary_key=True)
     date_added = db.Column(db.DateTime)
@@ -22,7 +40,18 @@ class Doc(db.Model):
 
 
 class Author(db.Model):
-    """Stores authors of a doc."""
+    """Author information associated with Doc model and adding new publication.
+
+    :param id: primary key (auto-generated)
+    :type id: int
+    :param doc_id: foreign key from Doc model (Doc.id)
+    :type doc_id: int
+    :param first_name: First name of author associated with Doc.id publication
+    :type first_name: str
+    :param last_name: Last name of author associated with Doc.id publication
+    :type last_name: str
+    :param doc: Establishes backref connection to Doc model
+    """
     __tablename__ = 'authors'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -43,7 +72,21 @@ class Author(db.Model):
 
 
 class BeforeDoc(db.Model):
-    '''Stores docs from table before form'''
+    """Model that captures state of a document object's metadata prior to edits.  This will be a useful
+    point of comparison for later work with document metadata. (i.e. What did the user edit?)
+
+    :param id: primary key (auto-generated)
+    :type id: int
+    :param doc_id: foreign key for the EditDoc model, edit_docs.id
+    :type doc_id: int 
+    :param title: title of document prior to edits
+    :type title: str
+    :param doi: Digital object identifier (DOI) prior to edits 
+    :type doi: str 
+    :param publication: Entitiy publishing document object prior to edits
+    :type publication: str 
+    :edit_doc: Establishes backref connection to EditDoc model
+    """
     __tablename__ = 'before_docs'
     id = db.Column(db.Integer, primary_key=True)
     doc_id = db.Column(db.Integer, db.ForeignKey('edit_docs.id'))
@@ -60,7 +103,18 @@ class BeforeDoc(db.Model):
 
 
 class BeforeAuthor(db.Model):
-    '''Stores author of edit doc'''
+    """Authors associated with BeforeDoc documents (i.e. documents prior to edits).
+
+    :param id: primary key (auto generated)
+    :type id: int 
+    :param doc_id: foreign key for BeforeDoc model 
+    :type doc_id: int 
+    :param first_name: first name associated with document author prior to edits 
+    :type first_name: str 
+    :param last_name: last name associated with document author prior to edits 
+    :type last_name: str 
+    :param before_doc: Establishes backref connection to BeforeDoc
+    """
     __tablename__ = "before_authors"
     id = db.Column(db.Integer, primary_key=True)
     doc_id = db.Column(db.Integer, db.ForeignKey('before_docs.id'))
@@ -77,7 +131,20 @@ class BeforeAuthor(db.Model):
 
 
 class EditDoc(db.Model):
-    """Stores docs for edit"""
+    """Model that captures the state of a document after a user submits edits.  Changes
+    can later be identified by comparing EditDoc metadata to BeforeDoc metadata. 
+
+    :param id: primary key (auto-generated)
+    :type id: int
+    :param date_added: date document added to database (useful for queries; auto-generated)
+    :type date_added: datetime 
+    :param title: title of document after edits 
+    :type title: str 
+    :param doi: Digital Object Identifier after edits
+    :type doi: str 
+    :param publication: Name of entity in which document is published after edits 
+    :type publication: str 
+    """
     __tablename__ = 'edit_docs'
     id = db.Column(db.Integer, primary_key=True)
 
@@ -88,7 +155,18 @@ class EditDoc(db.Model):
 
 
 class EditAuthor(db.Model):
-    '''Stores author of edit doc'''
+    """Authors associated with EditDoc model (i.e. authors after user edits)
+
+    :param id: primary key (auto-generated)
+    :type id: int 
+    :param doc_id: foreign key for EditDoc model 
+    :type doc_id: int 
+    :param first_name: first name associated with document author after user edits 
+    :type first_name: str 
+    :param last_name: last name associated with document author after user edits 
+    :type last_name: str 
+    :param before_doc: Establishes backref connection to EditDoc
+    """
     __tablename__ = "edit_authors"
     id = db.Column(db.Integer, primary_key=True)
 

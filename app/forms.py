@@ -1,24 +1,22 @@
+# forms.py
+# File contains all of the Flask form-fields required to add, edit, and update publications
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, FieldList, Form, FormField
 from wtforms.validators import DataRequired
-'''
-These fields are dummy fields, and will be used as placeholders until I gather more information
-on which fields are needed.  Flask forms allows for more complicated data structures and validation,
-so work will resume on this once the project structure is in place.
-'''
 
 class AuthorForm(Form):
-    """Subform.
-
-    CSRF is disabled for this subform (using `Form` as parent class) because
-    it is never used by itself.
+    """Form that inherits from wtforms.Form class. Contains fields for author 
+        first_name and last_name
     """
     first_name = StringField('First Name')
     last_name = StringField('Last Name')
 
 
 class NewPublication(FlaskForm):
-    '''Creates form field for new publication'''
+    """Contains the form-fields required to add a new publication. The author
+        FieldList allows for up to 30 authors.
+    """
 
     # adding small set of dummy data for setup purposes
     doi = StringField('DOI ')
@@ -38,7 +36,9 @@ class NewPublication(FlaskForm):
 
 
 class UpdatePublication(FlaskForm):
-    '''Creates form fields for update publication'''
+    """Contains the form-fields required to update a publication. The author
+    FieldList allows for up to 30 authors.
+    """
 
     title = StringField("Title ")
     doi = StringField("DOI ")
@@ -54,7 +54,9 @@ class UpdatePublication(FlaskForm):
 
 
 class UpdatePublicationStatus(FlaskForm):
-    '''Creates form fields for publication status'''
+    """[IN PROGRESS] This will contain the form-fields required to udpate a 
+    forthcoming publication. 
+    """
 
     title = StringField("Title ")
     submit = SubmitField('Submit')
