@@ -4,7 +4,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy() # start database
+db = SQLAlchemy()  # start database
 
 ########################
 # New Pubs Model

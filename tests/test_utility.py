@@ -7,6 +7,7 @@ srcdir = '..'
 sys.path.insert(0, os.path.join(testdir, srcdir))
 from app.utility import CRef, cdm_pull  
 
+# create directory for logging and testing
 directory = os.path.dirname(os.path.abspath(__file__))
 logs_path = os.path.join(directory, 'logs')
 logs_file = os.path.join(logs_path, 'logs.txt')

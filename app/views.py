@@ -55,7 +55,7 @@ def newpub():
         except TypeError:
             pass
 
-    form = NewPublication() # create form
+    form = NewPublication()  # create form
 
     # if utilities.CRef successfully parses the DOI, replace the empty form field with parsed content
     if title != '':
@@ -88,13 +88,13 @@ def newpub():
 
     if 'doifind' not in request.form:   # needed to make a distinction between new form and doifind
         if form.validate_on_submit():
-            new_doc = Doc() # call database model
+            new_doc = Doc()  # call database model
             db.session.add(new_doc)
             for author in form.authors.data:
                 new_author = Author(**author)
                 #  add to doc database entry
                 new_doc.authors.append(new_author)
-            
+
             # transfer the submitted form data to the database model
             new_doc.title = form.title.data
             new_doc.doi = form.doi.data.strip(
@@ -127,7 +127,7 @@ def editpub():
     """Edit Publication page. If the users selects a table row from dash_app template, 
         this view saves the stored flask session data into the BeforeDoc database model.
         Any changes submitted to this view are then stored in the EditDoc model. 
-    
+
         Returns:
             ./templates/editpub.html
             ./templates/success_edit.html (upon submit)
@@ -166,7 +166,7 @@ def editpub():
         before_doc.publication = publication
         before_doc.doi = doi
         new_doc.before_docs.append(before_doc)
-        db.session.commit()  
+        db.session.commit()
         flask.session.clear()
     except KeyError:
         pass

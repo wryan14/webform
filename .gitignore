@@ -129,6 +129,7 @@ dmypy.json
 .pyre/
 
 vi.swp
+logs.txt
 
 *.db
 *.sqlite

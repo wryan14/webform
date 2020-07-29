@@ -34,7 +34,6 @@ class NewPublication(FlaskForm):
     submit = SubmitField('Submit')
     
 
-
 class UpdatePublication(FlaskForm):
     """Contains the form-fields required to update a publication. The author
     FieldList allows for up to 30 authors.
