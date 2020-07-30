@@ -41,7 +41,26 @@ Forms
 
 The forms are directly tied to the input fields within the templates. The following table should help you link the name of the form with the template name and output. 
 
-
++-------------------------+----------------------------+-----------------------------------+
+| name                    | location(s)                | image                             |
++-------------------------+----------------------------+-----------------------------------+
+| DOI Form                | * templates/newpub.html    | .. image:: _static/form1.png      |
+|                         |                            |                                   |
++-------------------------+----------------------------+-----------------------------------+
+| AuthorForm              | * forms.py                 | .. image:: _static/authorform.png |
+|                         | * templates/newpub.html    |                                   |
+|                         | * templates/editpub.html   |                                   |
+|                         | * templates/updatepub.html |                                   |
++-------------------------+----------------------------+-----------------------------------+
+| NewPublication          | * forms.py                 | .. image:: _static/form2.png      |
+|                         | * templates/newpub.html    |                                   |
++-------------------------+----------------------------+-----------------------------------+
+| UpdatePublication       | * forms.py                 | .. image:: _static/form3.png      |
+|                         | * templates/editpub.html   |                                   |
++-------------------------+----------------------------+-----------------------------------+
+| UpdatePublicationStatus | * forms.py                 | .. image:: _static/form4.png      |
+|                         | * templates/updatepub.html |                                   |
++-------------------------+----------------------------+-----------------------------------+
 
 .. automodule:: app.forms 
    :members:  
