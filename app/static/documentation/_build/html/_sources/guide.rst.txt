@@ -96,6 +96,87 @@ The connection between the BeforeDoc and EditDoc model is one-to-one, meaning th
   :show-inheritance:  
 
 ####################
+Templates
+####################
+
+Templates use Jinja to create the HTML views used in the application.
+
+
++---------------------+-----------------------------------------------+--------------------------------------------+
+| file                | description                                   | image                                      |
++---------------------+-----------------------------------------------+--------------------------------------------+
+| base.html           | This template contains the navigation bar,    | .. image:: _static/base_html.png           |
+|                     |                                               |                                            |
+|                     | connects the JS and CSS to the project,       |                                            |
+|                     |                                               |                                            |
+|                     | and implements the JS script needed to        |                                            |
+|                     |                                               |                                            |
+|                     | adjust the number of authors per publication  |                                            |
+|                     |                                               |                                            |
+|                     | when editing records.                         |                                            |
++---------------------+-----------------------------------------------+--------------------------------------------+
+| welcome_page.html   | Navigation page used to direct users to the   | .. image:: _static/welcome_html.png        |
+|                     |                                               |                                            |
+|                     | new, edit, and forthcoming processes.         |                                            |
++---------------------+-----------------------------------------------+--------------------------------------------+
+| newpub.html         | Connects to                                   | .. image:: _static/newpub_html.png         |
+|                     |                                               |                                            |
+|                     | * view.py - newpub                            |                                            |
+|                     |                                               |                                            |
+|                     | * forms.py - AuthorForm and NewPublication    |                                            |
+|                     |                                               |                                            |
+|                     | * models.py - Doc and Author                  |                                            |
++---------------------+-----------------------------------------------+--------------------------------------------+
+| editpub.html        | Connects to                                   | .. image:: _static/editpub_html.png        |
+|                     |                                               |                                            |
+|                     |                                               |                                            |
+|                     | * views.py - editpub                          |                                            |
+|                     |                                               |                                            |
+|                     | * forms.py - AuthorForm and UpdatePublication |                                            |
+|                     |                                               |                                            |
+|                     | * models.py - BeforeAuthor, BeforeDoc         |                                            |
+|                     |                                               |                                            |
+|                     | * models.py - EditAuthor, EditDoc             |                                            |
++---------------------+-----------------------------------------------+--------------------------------------------+
+| updatepub.html      | Connects to                                   | .. image:: _static/updatepub_html.png      |
+|                     |                                               |                                            |
+|                     |                                               |                                            |
+|                     | * views.py - updatepub                        |                                            |
+|                     |                                               |                                            |
+|                     | * forms - updatepublicationstatus             |                                            |
+|                     |                                               |                                            |
++---------------------+-----------------------------------------------+--------------------------------------------+
+| __init__.py         | Combines components form the application,     | .. image:: _static/dash_table.png          |
+|                     |                                               |                                            |
+|                     | and allows for the app to be fully imported   |                                            |
+|                     |                                               |                                            |
+|                     | into main.py. This file also contains the     |                                            |
+|                     |                                               |                                            |
+|                     | dash table used to select records for edits.  |                                            |
++---------------------+-----------------------------------------------+--------------------------------------------+
+| success_new.html    | Reads from                                    | .. image:: _static/success_new_html.png    |
+|                     |                                               |                                            |
+|                     |                                               |                                            |
+|                     | * sqlite database                             |                                            |
+|                     |                                               |                                            |
+|                     | * models.py Doc and Author                    |                                            |
++---------------------+-----------------------------------------------+--------------------------------------------+
+| success_edit.html   | Reads from                                    | .. image:: _static/success_edit_html.png   |
+|                     |                                               |                                            |
+|                     | * sqlite database                             |                                            |
+|                     |                                               |                                            |
+|                     | * models.py BeforeAuthor and BeforeDoc        |                                            |
+|                     |                                               |                                            |
+|                     | * models.py EditAuthor and EditDoc            |                                            |
+|                     |                                               |                                            |
++---------------------+-----------------------------------------------+--------------------------------------------+
+| success_update.html | Under construction                            | .. image:: _static/success_update_html.png |
++---------------------+-----------------------------------------------+--------------------------------------------+
+
+
+
+
+####################
 Utilities
 ####################
 
