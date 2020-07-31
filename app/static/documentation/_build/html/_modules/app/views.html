@@ -83,7 +83,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../guide.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer.html">Developer’s Guide</a></li>
 </ul>
 
             
@@ -163,7 +163,7 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 
-<div class="viewcode-block" id="home"><a class="viewcode-back" href="../../guide.html#app.views.home">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="home"><a class="viewcode-back" href="../../developer.html#app.views.home">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">home</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Welcome page that provides options to navigate to new, edit, or forthcoming</span>
 <span class="sd">    functionality.</span>
@@ -174,7 +174,7 @@
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;welcome_page.html&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="newpub"><a class="viewcode-back" href="../../guide.html#app.views.newpub">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/new&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="newpub"><a class="viewcode-back" href="../../developer.html#app.views.newpub">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/new&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">newpub</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;New publication page where users can fill in the NewPublication form,</span>
 <span class="sd">    and save form to Doc database table. </span>
@@ -273,7 +273,7 @@
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;newpub.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="editpub"><a class="viewcode-back" href="../../guide.html#app.views.editpub">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/edit&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="editpub"><a class="viewcode-back" href="../../developer.html#app.views.editpub">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/edit&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">editpub</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Edit Publication page. If the users selects a table row from dash_app template, </span>
 <span class="sd">        this view saves the stored flask session data into the BeforeDoc database model.</span>
@@ -459,7 +459,7 @@
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;editpub.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="updatepub"><a class="viewcode-back" href="../../guide.html#app.views.updatepub">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/update&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="updatepub"><a class="viewcode-back" href="../../developer.html#app.views.updatepub">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/update&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">updatepub</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Renders the forthcoming process.</span>
 
@@ -481,7 +481,7 @@
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;updatepub.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="cleartable"><a class="viewcode-back" href="../../guide.html#app.views.cleartable">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/clear_table&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="cleartable"><a class="viewcode-back" href="../../developer.html#app.views.cleartable">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/clear_table&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">cleartable</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Clears null values from the edit_docs database; not intended for public use.</span>
 <span class="sd">        For an unknown reason, the database model adds a blank row in-between each</span>
@@ -500,25 +500,25 @@
     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="success_new"><a class="viewcode-back" href="../../guide.html#app.views.success_new">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/success_new&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="success_new"><a class="viewcode-back" href="../../developer.html#app.views.success_new">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/success_new&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">success_new</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Confirmation page after form submission for new items&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;success_new.html&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="success_edit"><a class="viewcode-back" href="../../guide.html#app.views.success_edit">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/success_edit&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="success_edit"><a class="viewcode-back" href="../../developer.html#app.views.success_edit">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/success_edit&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">success_edit</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Confirmation page after form submission for edit items&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;success_edit.html&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="success_update"><a class="viewcode-back" href="../../guide.html#app.views.success_update">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/success_update&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="success_update"><a class="viewcode-back" href="../../developer.html#app.views.success_update">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/success_update&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">success_update</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Confirmation page after form submission for update item&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;success_update.html&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="dash_app"><a class="viewcode-back" href="../../guide.html#app.views.dash_app">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/edit_table&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="dash_app"><a class="viewcode-back" href="../../developer.html#app.views.dash_app">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/edit_table&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">dash_app</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;This dash app presents a Dash table of fields that a user can select. Once selected, </span>
 <span class="sd">    the data is stored into the flask.session and used in the editpub process. </span>

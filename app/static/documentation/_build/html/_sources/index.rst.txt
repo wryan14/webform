@@ -11,7 +11,7 @@ Economist WebForms Documentation
    :caption: Contents:
 
    readme
-   guide
+   developer
 
 Indices and tables
 ==================
