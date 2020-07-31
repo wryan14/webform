@@ -529,10 +529,12 @@
 
     <span class="k">return</span> <span class="n">dapp</span><span class="o">.</span><span class="n">index</span><span class="p">()</span></div>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/documentation/&lt;dir&gt;/&lt;filename&gt;&#39;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;static&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<div class="viewcode-block" id="doc"><a class="viewcode-back" href="../../developer.html#app.views.doc">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/documentation/&lt;dir&gt;/&lt;filename&gt;&#39;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;static&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
 <span class="k">def</span> <span class="nf">doc</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;index.html&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Serves sphinx documentation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">send_static_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">send_static_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
     
 </pre></div>
 

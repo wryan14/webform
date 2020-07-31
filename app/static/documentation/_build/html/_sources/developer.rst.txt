@@ -23,11 +23,15 @@ Our institution has a tightly controlled IT infrastructure and heavily discourag
 Deployment
 -----------
 
+########
+Local  
+########
+
 To run a local version of this app install the dependencies from requirements.txt.
 
 .. code-block:: bash  
 
-   $ pip install requirements.txt 
+   $ pip install -r requirements.txt 
 
 Next, run the main.py file to launch a Flask development server.  By default the server is localhost:5000
 
@@ -35,6 +39,34 @@ Next, run the main.py file to launch a Flask development server.  By default the
 
    $ python main.py  
 
+
+##################
+Python Anywhere
+##################
+
+There is an instance of the webform hosted on PythonAnywhere. To view the example, `click here`_. 
+For information on launching a Flask application on PythonAnywhere, view `this documentation`_.
+
+
+.. _click here: http://wryan14.pythonanywhere.com/
+.. _this documentation: https://help.pythonanywhere.com/pages/Flask/
+
+When deploying this Flask application on any server, you will want to change the local_host variable (located at the toop of the app's __init__.py file to reflect the correct domain name).
+
+For example change:
+
+.. code-block:: python
+   
+   # app/__init__.py
+   local_url = "http://localhost:5000"
+
+to 
+
+.. code-block:: python
+
+   # app/__init__.py 
+   # local_url = "http://localhost:5000"
+   local_url = "http://wryan14.pythonanywhere.com"  
 
 
 
@@ -63,6 +95,85 @@ Project structure
    │   ├── logs
    │   └── test_utility.py
    └── todos.md
+
+###################
+User interactions
+###################
+
+**Add new publication to repository**
+
+   * The user arrives at the landing page and selects new publication
+      * views.home
+      * templates/welcome_page.html 
+    
+   * The user is provided the option to autopopulate the form using the publication's `DOI`_
+      * views.newpub 
+      * templates/newpub.html 
+      * utitlity.CRef
+      * forms.AuthorForm 
+      * forms.NewPublication 
+
+   * After autopopulating most of the form, the user can make minor edits or submit as is  
+      * views.newpub 
+      * templates.newpub
+      
+   * The data is stored in a database which will be queried by an automated system for review; the user is redirected to a success page
+      * views.success_new 
+      * templates/success_new.html 
+      * models.Doc 
+      * models.Author 
+
+**Edit existing publication in repository**
+
+   * The user arrives at the landing page and selects edit 
+      * views.home 
+      * templates/welcome_page.html
+
+   * The user selects the desired publication from a table (possibly using the filter feature)
+      * views.dash_app 
+      * utility.cdm_pull
+      * models.BeforeAuthor 
+      * models.BeforeDoc 
+
+   * After finding the publication, user hits edit and is redirected to an edit form that is prepopulated with metadata
+      * views.editpub 
+      * templates/editpub.html 
+
+   * The user edits the desired field and is redirected to a success page that shows the recent changes
+      * models.EditAuthor 
+      * models.EditDoc 
+
+   * Changes are stored in the database using tables that store the metadata before and after the edit  
+      * views.success_edit 
+      * templates/success_edit.html 
+      
+   * The database is queried and reviewed by an automated process 
+      * models.BeforeAuthor 
+      * models.EditAuthor 
+      * models.BeforeDoc 
+      * models.EditDoc
+
+**Update forthcoming publication** [UNDER CONSTRUCTION]
+
+   * The user arrives at the landng page and selects forthcoming
+      * views.home
+      * templates/welcome_page.html 
+
+   * The user selects the desired publication from a table, using the table's filter function
+      * [NEEDS BUILT]
+
+   * After finding the publication, user is redirected to a form that gathers metadata
+      * views.updatepub 
+      * templates/updatepub.html 
+      
+   * The form is stored in a database and queried by an automated process
+      * views.success_update 
+      * templates/success_update.html 
+      * [MODELS NEED BUILT]
+
+
+
+.. _DOI: https://library.uic.edu/help/article/1966/what-is-a-doi-and-how-do-i-use-them-in-citations
 
 App  
 ----
