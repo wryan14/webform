@@ -335,3 +335,50 @@ Views
 .. automodule:: app.views  
    :members:  
    :show-inheritance:
+
+Maintenance
+------------
+
+###############
+Unit tests
+###############
+
+The tests directory contains a few unit tests that are desined to ensure the utility.py code is working properly.
+It is important to keep these tests up-to-date, so any development work on utility.py should also include modifications
+to files in the tests directory. Especially when working with data third-pary data, it is a good idea to regurlarly run
+tests to make sure the expected results are being returned. If CrossRef, for example, decides to change their schema, 
+reformat, or is down for maintanence, tests can help identify the issue early on. 
+
+###################
+Documentation 
+###################
+
+All project documentation is created with Sphinx and is housed in the project (app/static/documentation). 
+The project is using Sphinx's autodocument feature for doc strings on existing classes and functions, but if you add  
+new functions, you will need to include these in the documentation. If you make changes to the docstring of existing 
+classes and functions, you should run the sphinx `make html` command from the root of the documentation folder and 
+push the changes to github, and potentially pull the changes to PythonAnywhere or some other production server. 
+
+For additional information on Sphinx review the `Sphinx documentation`_.
+
+.. _Sphinx documentation: https://www.sphinx-doc.org/en/master/usage/quickstart.html
+
+Future work
+-------------
+
+Most of the forthcoming process needs to be constructed.
+      
+  - Build table with Dash data tables; similar to the one that exists for the Edit process 
+  - Build a database model for the forthcoming process 
+
+Permanent location 
+
+  - Modify form to work with new server in permanent location 
+  - Build queries to process data collected from the forms 
+  - Build automated process to properly format data for inclusion in CONTENTEdm repository 
+  - The database will likely need to be switched from SQLite to Postgresql
+
+Bugs and Appearance 
+
+  - Improve formatting for smaller screens i.e. mobile apps 
+

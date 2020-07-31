@@ -381,6 +381,8 @@ def dash_app():
 
 @app.route('/documentation/<dir>/<filename>', defaults={'static': True})
 def doc(dir='',filename='index.html'):
+    """Serves sphinx documentation
+    """
     path = join(dir,filename)
     return app.send_static_file(path)
     
