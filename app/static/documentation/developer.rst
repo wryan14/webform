@@ -10,15 +10,9 @@ Developer's Guide
 Overview
 ----------
 
-Many libraries and information centers now offer an institutional repository to those in their host organization. These repositories allow researchers, associated with a given university, government agency, or think-tank, to disseminate working papers and early versions of their research. For those familiar with the open-access movement, institutional repositories are often key-players in freely distributing the most cutting-edge scholarship. Our library is associated with a government organization that employs over 200 Ph.D. economists, all of whom are encouraged to maintain an internal web page that pulls its data from our repository.
-To add or edit their publication list, economists currently need to contact someone from our library staff and request the edits. The current system is inefficient for both sides of the exchange. On the one hand, economists need to already know or lookup who to contact to make updates. For the library, these email requests are often free-form and lack much of the metadata we require to make a full entry into the repository system. When emails are ambiguous, a librarian or contractor will need to research the economist, paper title, journal publisher, and more to come up with a complete record. During high-output times of the year, it is not unusual to see as many as 20 requests per day, each of which takes several minutes to prepare.
-
+Many libraries and information centers now offer an institutional repository that houses research from the parent institution. These repositories allow researchers, associated with a given university, government agency, or think-tank, to disseminate working papers and early versions of their research. For those familiar with the open-access movement, institutional repositories are often key-players in freely distributing the most cutting-edge scholarship. Our library is associated with a government organization that employs over 200 Ph.D. economists, all of whom are encouraged to maintain an internal web page that pulls its data from our repository. To add or edit their publication list, economists currently need to contact someone from our library staff and request the edits. The current system is inefficient for both sides of the exchange.
+On the one hand, economists need to know already or lookup who to contact to make updates. For the library, these email requests are often free-form and lack much of the metadata we require to make a full entry into the repository system. When emails are ambiguous, a librarian or contractor will need to research the economist, paper title, journal publisher, and more to come up with a complete record. During high-output times of the year, it is not unusual to see as many as 20 requests per day, each of which takes several minutes to prepare.
 The aim of this product is two-fold. By creating a web-form, we can gently solicit the information we need from economists without overwhelming them with yet more paperwork. The human-computer interaction facilitated by this form should serve to remove ambiguity on both sides and pave the way for more opportunities to automate data entry.
-
-
-**Why not other solutions?**
-
-Our institution has a tightly controlled IT infrastructure and heavily discourages and prohibits the use of cloud-based solutions. Google forms, for example, is not an option; even if it were, we would likely need better access and control over how we present and access the collected data. Our environment already has a robust system of flask apps hosted on our intranet, and we can quickly set up a Postgresql database to store the form's output. I have a background in data and information modeling, so creating and maintaining a database is well within our capabilities.
 
 Deployment
 -----------
@@ -343,21 +337,21 @@ Maintenance
 Unit tests
 ###############
 
-The tests directory contains a few unit tests that are desined to ensure the utility.py code is working properly.
-It is important to keep these tests up-to-date, so any development work on utility.py should also include modifications
-to files in the tests directory. Especially when working with data third-pary data, it is a good idea to regurlarly run
-tests to make sure the expected results are being returned. If CrossRef, for example, decides to change their schema, 
-reformat, or is down for maintanence, tests can help identify the issue early on. 
+The tests directory contains a few unit tests that are designed to ensure the utility.py code is working correctly. 
+It is essential to keep these tests up-to-date, so any development work on utility.py should also include modifications 
+to files in the tests directory. Especially when working with third-party data, it is useful to regularly run tests to make 
+sure the expected results are being returned. If CrossRef, for example, decides to change their schema, reformat, or is down for 
+maintenance, tests can help identify the issue early on.
 
 ###################
 Documentation 
 ###################
 
-All project documentation is created with Sphinx and is housed in the project (app/static/documentation). 
-The project is using Sphinx's autodocument feature for doc strings on existing classes and functions, but if you add  
-new functions, you will need to include these in the documentation. If you make changes to the docstring of existing 
-classes and functions, you should run the sphinx `make html` command from the root of the documentation folder and 
-push the changes to github, and potentially pull the changes to PythonAnywhere or some other production server. 
+All project documentation is created with Sphinx and is housed in the project's static folder: (app/static/documentation). 
+The project is using Sphinx's auto-document feature for docstrings on existing classes and functions. Changes to existing 
+docstrings will update automatically, but new classes, methods, and functions will need to be inserted into the documentation.  
+After making changes, you should run the Sphinx `make html` command from the root of the documentation folder and push the changes 
+to GitHub, and potentially pull the changes to PythonAnywhere or some other production server.
 
 For additional information on Sphinx review the `Sphinx documentation`_.
 
@@ -368,14 +362,14 @@ Future work
 
 Most of the forthcoming process needs to be constructed.
       
-  - Build table with Dash data tables; similar to the one that exists for the Edit process 
+  - Build a forthcoming table with Dash data tables; similar to the one that exists for the Edit process 
   - Build a database model for the forthcoming process 
 
 Permanent location 
 
   - Modify form to work with new server in permanent location 
   - Build queries to process data collected from the forms 
-  - Build automated process to properly format data for inclusion in CONTENTEdm repository 
+  - Build automated process to properly format data for inclusion in CONTENTdm repository 
   - The database will likely need to be switched from SQLite to Postgresql
 
 Bugs and Appearance 
