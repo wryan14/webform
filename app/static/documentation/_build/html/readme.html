@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>About &mdash; Economist Webforms 1.0 documentation</title>
+  <title>Readme &mdash; Economist Webforms 1.0 documentation</title>
   
 
   
@@ -36,7 +36,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Programmer’s Guide" href="guide.html" />
+    <link rel="next" title="Developer’s Guide" href="developer.html" />
     <link rel="prev" title="Economist WebForms Documentation" href="index.html" /> 
 </head>
 
@@ -84,8 +84,19 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guide.html">Programmer’s Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Readme</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#auto-populate-with-doi">Auto-populate with DOI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dash-application">Dash application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#database">Database</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#known-issues">Known issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer.html">Developer’s Guide</a></li>
 </ul>
 
             
@@ -132,7 +143,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>About</li>
+      <li>Readme</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -151,8 +162,82 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="about">
-<h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="readme">
+<h1>Readme<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
+<p>A Flask-based form that allows users to submit or edit publication
+metadata. This project integrates CrossRef’s API to enable users to
+auto-populate metadata that contains a DOI. 1) main.py: imports the app
+and runs it on the Flask development server.</p>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>This project is built with Flask, WTForms, and Dash, among various other
+libraries. To ensure proper installation, make sure you have: - Python
+3.7 or higher - <em>requirements.txt</em></p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Once you are sure you have Python 3.7 or higher installed, you can
+install dependencies using pip.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install -r requirements.txt
+</pre></div>
+</div>
+<p>To run the flask application locally, simply navigate your command line
+to the root of this project and run the main.py file and open a browser
+to localhost:5000.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python main.py
+</pre></div>
+</div>
+<p>An example of this application is hosted with PythonAnywhere. To host
+this webform with a third-party service, follow the instructions of
+PythonAnywhere or a related product on how to clone and configure the
+WSGI.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>When completed, the Economist WebForm allows users to submit a new
+publication, edit an existing paper, or update a forthcoming article.
+All data here and on the live PythonAnywhere example uses dummy data to
+demonstrate functionality.</p>
+<div class="section" id="auto-populate-with-doi">
+<h3>Auto-populate with DOI<a class="headerlink" href="#auto-populate-with-doi" title="Permalink to this headline">¶</a></h3>
+<p>From the welcome page, select add a new publication. Near the top of the
+screen is a search box. This is options, but if the publication you wish
+to submit for review contains a DOI, you can add that here and
+prepopulate some of the metadata. If the form prepopulates and some of
+the metadata looks incorrect, the user can make the corrections as
+needed. If you submit a DOI and only the DOI field prepopulates, this
+means that metadata was not found for that particular DOI.</p>
+</div>
+<div class="section" id="dash-application">
+<h3>Dash application<a class="headerlink" href="#dash-application" title="Permalink to this headline">¶</a></h3>
+<p>When the user selects the Edit option from the welcome page, they are
+redirected to a Dash table that contains string filters. This table uses
+dummy XML data, but a developer can modify it to integrate with a
+repository or some other API. We will eventually pull our CONTENTdm
+repository metadata into this table, where users can select the
+publication from a repository. Each column on the table is sortable, and
+there are options for paginating through the table, located at the
+bottom right corner.</p>
+</div>
+<div class="section" id="database">
+<h3>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h3>
+<p>SQLite is our default database. New submissions are stored in a table
+called Docs. Edited documents store the first state of the document as
+BeforeDoc and the metadata’s edited state in a table called EditDoc.
+This data can be regularly queried for various backend processes, such
+as formatting the metadata contained in the SQLite database</p>
+<p>The “clear_table” view was created to remove blank rows from the SQLite
+database. You can periodically navigate to localhost:5000/clear_table
+to accomplish this.</p>
+</div>
+</div>
+<div class="section" id="known-issues">
+<h2>Known issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Formatting issues on mobile devices and smaller screens</p></li>
+<li><p>Null rows introduced into EditDoc database table upon submission</p></li>
+</ul>
+</div>
 </div>
 
 
@@ -163,7 +248,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="guide.html" class="btn btn-neutral float-right" title="Programmer’s Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="developer.html" class="btn btn-neutral float-right" title="Developer’s Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="Economist WebForms Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

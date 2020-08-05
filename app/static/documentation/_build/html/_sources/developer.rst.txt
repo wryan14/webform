@@ -45,7 +45,7 @@ For information on launching a Flask application on PythonAnywhere, view `this d
 .. _click here: http://wryan14.pythonanywhere.com/
 .. _this documentation: https://help.pythonanywhere.com/pages/Flask/
 
-When deploying this Flask application on any server, you will want to change the local_host variable (located at the toop of the app's __init__.py file to reflect the correct domain name).
+When deploying this Flask application on any server, you will want to change the local_host variable (located at the top of the app's __init__.py file to reflect the correct domain name).
 
 For example change:
 
