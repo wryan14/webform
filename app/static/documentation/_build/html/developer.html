@@ -937,19 +937,19 @@ and save form to Doc database table.</p>
 <h2><a class="toc-backref" href="#id14">Maintenance</a><a class="headerlink" href="#maintenance" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="unit-tests">
 <h3><a class="toc-backref" href="#id15">Unit tests</a><a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h3>
-<p>The tests directory contains a few unit tests that are desined to ensure the utility.py code is working properly.
-It is important to keep these tests up-to-date, so any development work on utility.py should also include modifications
-to files in the tests directory. Especially when working with data third-pary data, it is a good idea to regurlarly run
-tests to make sure the expected results are being returned. If CrossRef, for example, decides to change their schema,
-reformat, or is down for maintanence, tests can help identify the issue early on.</p>
+<p>The tests directory contains a few unit tests that are designed to ensure the utility.py code is working correctly.
+It is essential to keep these tests up-to-date, so any development work on utility.py should also include modifications
+to files in the tests directory. Especially when working with third-party data, it is useful to regularly run tests to make
+sure the expected results are being returned. If CrossRef, for example, decides to change their schema, reformat, or is down for
+maintenance, tests can help identify the issue early on.</p>
 </div>
 <div class="section" id="documentation">
 <h3><a class="toc-backref" href="#id16">Documentation</a><a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h3>
-<p>All project documentation is created with Sphinx and is housed in the project (app/static/documentation).
-The project is using Sphinx’s autodocument feature for doc strings on existing classes and functions, but if you add
-new functions, you will need to include these in the documentation. If you make changes to the docstring of existing
-classes and functions, you should run the sphinx <cite>make html</cite> command from the root of the documentation folder and
-push the changes to github, and potentially pull the changes to PythonAnywhere or some other production server.</p>
+<p>All project documentation is created with Sphinx and is housed in the project’s static folder: (app/static/documentation).
+The project is using Sphinx’s auto-document feature for docstrings on existing classes and functions. Changes to existing
+docstrings will update automatically, but new classes, methods, and functions will need to be inserted into the documentation.
+After making changes, you should run the Sphinx <cite>make html</cite> command from the root of the documentation folder and push the changes
+to GitHub, and potentially pull the changes to PythonAnywhere or some other production server.</p>
 <p>For additional information on Sphinx review the <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/quickstart.html">Sphinx documentation</a>.</p>
 </div>
 </div>
@@ -958,7 +958,7 @@ push the changes to github, and potentially pull the changes to PythonAnywhere o
 <p>Most of the forthcoming process needs to be constructed.</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Build table with Dash data tables; similar to the one that exists for the Edit process</p></li>
+<li><p>Build a forthcoming table with Dash data tables; similar to the one that exists for the Edit process</p></li>
 <li><p>Build a database model for the forthcoming process</p></li>
 </ul>
 </div></blockquote>
@@ -967,7 +967,7 @@ push the changes to github, and potentially pull the changes to PythonAnywhere o
 <div><ul class="simple">
 <li><p>Modify form to work with new server in permanent location</p></li>
 <li><p>Build queries to process data collected from the forms</p></li>
-<li><p>Build automated process to properly format data for inclusion in CONTENTEdm repository</p></li>
+<li><p>Build automated process to properly format data for inclusion in CONTENTdm repository</p></li>
 <li><p>The database will likely need to be switched from SQLite to Postgresql</p></li>
 </ul>
 </div></blockquote>
